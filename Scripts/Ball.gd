@@ -1,14 +1,17 @@
 extends CharacterBody2D
 
-var velocity_vector: Vector2 = Vector2.ZERO
-var remainder: float = 0.0
+@export var gravity: float = 1500
+@export var bounce_power: float = 1.5
+@export var minimum_speed: float = 100.0
+@export var minimum_height_gain: float = 100
+@export var max_speed: float = 600.0
 
-func _physics_process()
-	var collision: = move_and_collide(velocity * delta + velocity.normalized()*remainder)
-	remainder = 0.0
-	if coll:
-		var speed: = velocity.length() 							#current speed
-		var dir: = velocity.normalized()						#current direction
-		var normal:Vector2 = collision.normal
-		remainder = collision.remainder.length()				#velocity remainder
-		velocity = dir.bounce(normal) *speed					#velocity after bouncing off the surface
+func _ready():
+	set_velocity(Vector2(250, 250))
+
+func _physics_process(delta):
+	var collision_info = move_and_collide(velocity * delta)
+	if collision_info:
+		velocity = velocity.bounce(collision_info.get_normal()) 
+	velocity.y += gravity * delta
+			

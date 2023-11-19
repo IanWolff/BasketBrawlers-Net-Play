@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://jaegp53ccc7w" path="res://Assets/Spritesheet/platformPack_tilesheet.png" id="5_wqbaa"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5up0g"]
-radius = 23.0
+radius = 39.0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gs0qk"]
 texture = ExtResource("5_wqbaa")
@@ -99,12 +99,12 @@ one_shot = true
 script = ExtResource("3_wojtj")
 
 [node name="Sprite2D" type="Sprite2D" parent="Ball"]
-position = Vector2(449.875, 251.875)
-scale = Vector2(0.0869772, 0.0869772)
+position = Vector2(451, 252)
+scale = Vector2(0.146388, 0.146388)
 texture = ExtResource("4_jmb16")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
-position = Vector2(450, 252)
+position = Vector2(451, 252)
 shape = SubResource("CircleShape2D_5up0g")
 
 [node name="Level" type="Node2D" parent="."]
