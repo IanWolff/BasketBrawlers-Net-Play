@@ -3,22 +3,25 @@ extends CharacterBody2D
 # --------- VARIABLES ---------- #
 
 @export_category("Player Properties") # You can tweak these changes according to your likings
-@export var move_speed : float = 400
-@export var jump_force : float = 600
-@export var gravity : float = 20
+@export var move_speed : float = 400.0
+@export var jump_force : float = 1000.0
+@export var gravity : float = 16.0
 @export var max_jump_count : int = 2
 var jump_count : int = 2
 
 @export_category("Toggle Functions") # Double jump feature is disable by default (Can be toggled from inspector)
 @export var double_jump : = false
 
-var is_grounded : bool = false
-
 @onready var player_sprite = $AnimatedSprite2D
 @onready var spawn_point = %SpawnPoint
 @onready var particle_trails = $ParticleTrails
 @onready var death_particles = $DeathParticles
-@onready var coyote_time: Timer = $CoyoteTimer
+@onready var coyote_timer: Timer = $CoyoteTimer
+@onready var short_hop_timer: Timer = $ShortHopTimer
+
+var is_grounded : bool = false
+var is_short_hopping : bool = false
+var is_jumping : bool = false
 
 # --------- BUILT-IN FUNCTIONS ---------- #
 
@@ -38,9 +41,8 @@ func movement():
 	elif is_on_floor():
 		jump_count = max_jump_count
 	
+	# Jumping and coyote time
 	handle_jumping()
-	
-	# Coyote Time
 	var wasOnfloor = is_on_floor()
 	
 	# Move Player
@@ -49,29 +51,43 @@ func movement():
 	move_and_slide()
 	
 	if wasOnfloor and !is_on_floor():
-		coyote_time.start()
+		coyote_timer.start()
 	
 
 # Handles jumping functionality (double jump or single jump, can be toggled from inspector)
 func handle_jumping():
 	if Input.is_action_just_pressed("Jump"):
-		if (is_on_floor() or !coyote_time.is_stopped()) and !double_jump:
+		if (is_on_floor() or !coyote_timer.is_stopped()) and !double_jump:
 			jump()
 		elif double_jump and jump_count > 0:
 			jump()
 			jump_count -= 1
-
+	if Input.is_action_just_released("Jump") and !short_hop_timer.is_stopped():
+		is_short_hopping = true
+	if short_hop_timer.is_stopped() and is_short_hopping:
+		stop_jump()
+	if is_on_floor():
+		is_jumping = false
+		
 # Player jump
 func jump():
+	is_jumping = true
+	short_hop_timer.start()
 	jump_tween()
 	AudioManager.jump_sfx.play()
 	velocity.y = -jump_force
+		
+# Short hop
+func stop_jump():
+	if velocity.y < -100:
+		velocity.y = -100
+	is_jumping = false
+	is_short_hopping = false
+	
 
 # Handle Player Animations
 func player_animations():
 	particle_trails.emitting = false
-	
-	
 	if is_on_floor():
 		if abs(velocity.x) > 0:
 			particle_trails.emitting = true
