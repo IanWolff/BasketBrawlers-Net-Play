@@ -22,7 +22,6 @@ var rand : RandomNumberGenerator = RandomNumberGenerator.new()
 
 # Ball States
 var is_grabbable : bool = false
-var grab_candidates : Array[Player] = []
 
 func _ready():
 	velocity.y = rand.randf_range(-1500,-500)
@@ -43,18 +42,15 @@ func _physics_process(delta):
 		if has_gravity:
 			velocity.y += gravity * delta
 
-func grab(grabbing_player : Player) -> bool:
-	if is_grabbable:
-		print("You grabbed it!")
-		self.reparent(grabbing_player)
-		can_move = false
-		is_held = true
-		position.x = 0
-		position.y = -38
-		scale.x = 1
-		scale.y = 1
-		return true
-	return false
+func grab(grabbing_player : Player):
+	print("You grabbed it!")
+	self.reparent(grabbing_player)
+	can_move = false
+	is_held = true
+	position.x = 0
+	position.y = -38
+	scale.x = 1
+	scale.y = 1
 
 func drop(thrower_velocity : Vector2):
 	if is_held:
@@ -62,13 +58,3 @@ func drop(thrower_velocity : Vector2):
 		velocity = thrower_velocity
 		scale.x = 1
 		scale.y = 1
-
-func _on_grab_component_area_entered(area):
-	if area is GrabComponent:
-		grab_candidates.append(area.get_parent())
-		is_grabbable = true
-
-func _on_grab_component_area_shape_exited(area_rid, area, area_shape_index, local_shape_index):
-	if area is GrabComponent:
-		grab_candidates.erase(area.get_parent())
-		is_grabbable = len(grab_candidates) > 0

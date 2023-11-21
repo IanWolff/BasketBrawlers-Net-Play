@@ -54,8 +54,9 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vheck"]
 size = Vector2(53, 68)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_rh2x6"]
-radius = 56.4026
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_71x7e"]
+radius = 35.0
+height = 92.0
 
 [sub_resource type="Curve" id="Curve_m2jh0"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.246032, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -79,11 +80,13 @@ position = Vector2(0.5, 14)
 shape = SubResource("RectangleShape2D_vheck")
 
 [node name="GrabComponent" parent="." groups=["GrabComponent"] instance=ExtResource("3_c8tov")]
+position = Vector2(38, 10)
 collision_layer = 4
 collision_mask = 8
 
 [node name="GrabHitbox" type="CollisionShape2D" parent="GrabComponent" groups=["GrabComponent", "Player"]]
-shape = SubResource("CircleShape2D_rh2x6")
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_71x7e")
 
 [node name="GrabTimer" type="Timer" parent="GrabComponent"]
 wait_time = 0.2
@@ -108,7 +111,7 @@ scale_amount_curve = SubResource("Curve_m2jh0")
 color_ramp = SubResource("Gradient_3gc37")
 
 [node name="DeathParticles" type="CPUParticles2D" parent="."]
-position = Vector2(-1, 15)
+position = Vector2(23, 11)
 emitting = false
 amount = 20
 lifetime = 0.6

@@ -62,20 +62,13 @@ func handle_actions():
 		elif double_jump and jump_count > 0:
 			jump()
 			jump_count -= 1
-	elif Input.is_action_just_pressed("Grab-Drop") and can_throw:
-			held_object.reparent(self.get_parent())
-			held_object.drop(velocity)
-			can_grab = true
-			can_throw = false
-	elif Input.is_action_just_pressed("Grab-Drop") or !$GrabComponent/GrabTimer.is_stopped():
-		if can_grab:
-			if len(grabbable_objects) > 0:
-				held_object = grabbable_objects.pop_front()
-				held_object.grab(self)
-				can_grab = false
-				can_throw = true
-			elif $GrabComponent/GrabTimer.is_stopped():
-				$GrabComponent/GrabTimer.start()
+	elif Input.is_action_just_pressed("Grab-Drop"):
+		if can_throw:
+			drop_held_object()
+		elif can_grab:
+			grab()
+	elif !$GrabComponent/GrabTimer.is_stopped() and can_grab:
+		grab()
 	if Input.is_action_just_released("Jump") and !$ShortHopTimer.is_stopped():
 		is_short_hopping = true
 	if $ShortHopTimer.is_stopped() and is_short_hopping:
@@ -91,6 +84,24 @@ func jump():
 	jump_tween()
 	#AudioManager.jump_sfx.play()
 	velocity.y = -jump_force
+
+# Drops the currently held object
+func grab():
+	if len(grabbable_objects) > 0:
+		held_object = grabbable_objects.pop_front()
+		held_object.grab(self)
+		can_grab = false
+		can_throw = true
+		return true
+	elif $GrabComponent/GrabTimer.is_stopped():
+		$GrabComponent/GrabTimer.start()
+
+# Drops the currently held object
+func drop_held_object():
+	held_object.reparent(self.get_parent())
+	held_object.drop(velocity)
+	can_grab = true
+	can_throw = false
 
 # Short hop
 func stop_jump():
