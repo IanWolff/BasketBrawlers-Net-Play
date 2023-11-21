@@ -1,56 +1,56 @@
 extends CharacterBody2D
+class_name Player
 
-# --------- VARIABLES ---------- #
-
-@export_category("Player Properties") # You can tweak these changes according to your likings
+@export_category("Player Properties")
 @export var move_speed : float = 400.0
 @export var jump_force : float = 1000.0
 @export var gravity : float = 16.0
 @export var max_jump_count : int = 2
-var jump_count : int = 2
 
-@export_category("Toggle Functions") # Double jump feature is disable by default (Can be toggled from inspector)
-@export var double_jump : = false
+@export_category("Toggle Functions")
+@export var double_jump : bool = false
 
-@onready var player_sprite = $AnimatedSprite2D
-@onready var spawn_point = %SpawnPoint
-@onready var particle_trails = $ParticleTrails
-@onready var death_particles = $DeathParticles
+@export_category("Player States")
+@export var is_grounded : bool = false
+@export var is_short_hopping : bool = false
+@export var is_jumping : bool = false
+
+# Player graphics
+@onready var player_sprite : AnimatedSprite2D = $AnimatedSprite2D
+@onready var particle_trails : CPUParticles2D = $ParticleTrails
+@onready var death_particles : CPUParticles2D = $DeathParticles
+
+# Timers
 @onready var coyote_timer: Timer = $CoyoteTimer
 @onready var short_hop_timer: Timer = $ShortHopTimer
 
-var is_grounded : bool = false
-var is_short_hopping : bool = false
-var is_jumping : bool = false
-
-# --------- BUILT-IN FUNCTIONS ---------- #
+var jump_count : int = 2
+var was_on_floor : bool = false
+var overlapping_bodies : Array[RigidBody2D] = []
 
 func _process(_delta):
-	# Calling functions
 	movement()
 	player_animations()
 	flip_player()
-	
-# --------- CUSTOM FUNCTIONS ---------- #
 
-# <-- Player Movement Code -->
+# Player Movement Code
 func movement():
-	# Gravity
+	# Apply gravity to Player
 	if !is_on_floor():
 		velocity.y += gravity
 	elif is_on_floor():
 		jump_count = max_jump_count
 	
-	# Jumping and coyote time
+	# Handle jumping and set variables for coyote time
 	handle_jumping()
-	var wasOnfloor = is_on_floor()
+	was_on_floor = is_on_floor()
 	
 	# Move Player
 	var inputAxis = Input.get_axis("Left", "Right")
 	velocity = Vector2(inputAxis * move_speed, velocity.y)
 	move_and_slide()
 	
-	if wasOnfloor and !is_on_floor():
+	if was_on_floor and !is_on_floor():
 		coyote_timer.start()
 	
 
@@ -68,22 +68,20 @@ func handle_jumping():
 		stop_jump()
 	if is_on_floor():
 		is_jumping = false
+		is_short_hopping = false
 		
 # Player jump
 func jump():
 	is_jumping = true
 	short_hop_timer.start()
 	jump_tween()
-	AudioManager.jump_sfx.play()
+	#AudioManager.jump_sfx.play()
 	velocity.y = -jump_force
-		
+
 # Short hop
 func stop_jump():
 	if velocity.y < -100:
-		velocity.y = -100
-	is_jumping = false
-	is_short_hopping = false
-	
+		velocity.y = -100	
 
 # Handle Player Animations
 func player_animations():
@@ -109,9 +107,8 @@ func death_tween():
 	var tween = create_tween()
 	tween.tween_property(self, "scale", Vector2.ZERO, 0.15)
 	await tween.finished
-	global_position = spawn_point.global_position
 	await get_tree().create_timer(0.3).timeout
-	AudioManager.respawn_sfx.play()
+	#AudioManager.respawn_sfx.play()
 	respawn_tween()
 
 func respawn_tween():
@@ -124,11 +121,3 @@ func jump_tween():
 	tween.tween_property(self, "scale", Vector2(0.7, 1.4), 0.1)
 	tween.tween_property(self, "scale", Vector2.ONE, 0.1)
 
-# --------- SIGNALS ---------- #
-
-# Reset the player's position to the current level spawn point if collided with any trap
-func _on_collision_body_entered(_body):
-	if _body.is_in_group("Traps"):
-		AudioManager.death_sfx.play()
-		death_particles.emitting = true
-		death_tween()

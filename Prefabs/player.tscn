@@ -1,8 +1,9 @@
 [gd_scene load_steps=13 format=3 uid="uid://w7m6tehvvy3g"]
 
-[ext_resource type="Script" path="res://Scripts/Player.gd" id="1_qt7d6"]
+[ext_resource type="Script" path="res://Scripts/player.gd" id="1_0dwpp"]
 [ext_resource type="Texture2D" uid="uid://cbss87b7xk5lc" path="res://Assets/Spritesheet/platformerPack_character.png" id="2_q0cxm"]
 [ext_resource type="Texture2D" uid="uid://dxp77wq60c2rr" path="res://Assets/Textures/CloudTexture.png" id="3_8vxmb"]
+[ext_resource type="PackedScene" uid="uid://dt40yv1l31o7n" path="res://Components/grab_component.tscn" id="3_c8tov"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_57bci"]
 atlas = ExtResource("2_q0cxm")
@@ -50,12 +51,8 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_n4sts"]
-radius = 27.0
-height = 66.0
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_tvbjh"]
-size = Vector2(58, 69)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vheck"]
+size = Vector2(53, 68)
 
 [sub_resource type="Curve" id="Curve_m2jh0"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.246032, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -66,21 +63,24 @@ offsets = PackedFloat32Array(0.25, 1)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
-script = ExtResource("1_qt7d6")
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_0dwpp")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." groups=["Player"]]
 sprite_frames = SubResource("SpriteFrames_4nss6")
 animation = &"Walk"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 15)
-shape = SubResource("CapsuleShape2D_n4sts")
+[node name="Collision" type="CollisionShape2D" parent="." groups=["Player"]]
+position = Vector2(0.5, 14)
+shape = SubResource("RectangleShape2D_vheck")
 
-[node name="Collision" type="Area2D" parent="."]
+[node name="GrabComponent" parent="." instance=ExtResource("3_c8tov")]
+collision_layer = 4
+collision_mask = 8
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision"]
-position = Vector2(0, 14.5)
-shape = SubResource("RectangleShape2D_tvbjh")
+[node name="GrabHitbox" type="CollisionShape2D" parent="GrabComponent" groups=["Player"]]
+shape = SubResource("RectangleShape2D_vheck")
 
 [node name="ParticleTrails" type="CPUParticles2D" parent="."]
 position = Vector2(0, 42)
@@ -120,4 +120,10 @@ scale_amount_max = 30.0
 scale_amount_curve = SubResource("Curve_m2jh0")
 color_ramp = SubResource("Gradient_3gc37")
 
-[connection signal="body_entered" from="Collision" to="." method="_on_collision_body_entered"]
+[node name="ShortHopTimer" type="Timer" parent="."]
+wait_time = 0.12
+one_shot = true
+
+[node name="CoyoteTimer" type="Timer" parent="."]
+wait_time = 0.12
+one_shot = true
