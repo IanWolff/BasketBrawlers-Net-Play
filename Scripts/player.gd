@@ -14,19 +14,19 @@ class_name Player
 @export var is_grounded : bool = false
 @export var is_short_hopping : bool = false
 @export var is_jumping : bool = false
+@export var can_grab : bool = true
+@export var can_throw : bool = false
 
 # Player graphics
 @onready var player_sprite : AnimatedSprite2D = $AnimatedSprite2D
 @onready var particle_trails : CPUParticles2D = $ParticleTrails
 @onready var death_particles : CPUParticles2D = $DeathParticles
 
-# Timers
-@onready var coyote_timer: Timer = $CoyoteTimer
-@onready var short_hop_timer: Timer = $ShortHopTimer
-
 var jump_count : int = 2
 var was_on_floor : bool = false
-var overlapping_bodies : Array[RigidBody2D] = []
+
+var grabbable_objects : Array[Ball] = []
+var held_object
 
 func _process(_delta):
 	movement()
@@ -42,7 +42,7 @@ func movement():
 		jump_count = max_jump_count
 	
 	# Handle jumping and set variables for coyote time
-	handle_jumping()
+	handle_actions()
 	was_on_floor = is_on_floor()
 	
 	# Move Player
@@ -51,20 +51,34 @@ func movement():
 	move_and_slide()
 	
 	if was_on_floor and !is_on_floor():
-		coyote_timer.start()
-	
+		$CoyoteTimer.start()
+
 
 # Handles jumping functionality (double jump or single jump, can be toggled from inspector)
-func handle_jumping():
+func handle_actions():
 	if Input.is_action_just_pressed("Jump"):
-		if (is_on_floor() or !coyote_timer.is_stopped()) and !double_jump:
+		if (is_on_floor() or !$CoyoteTimer.is_stopped()) and !double_jump:
 			jump()
 		elif double_jump and jump_count > 0:
 			jump()
 			jump_count -= 1
-	if Input.is_action_just_released("Jump") and !short_hop_timer.is_stopped():
+	elif Input.is_action_just_pressed("Grab-Drop") and can_throw:
+			held_object.reparent(self.get_parent())
+			held_object.drop(velocity)
+			can_grab = true
+			can_throw = false
+	elif Input.is_action_just_pressed("Grab-Drop") or !$GrabComponent/GrabTimer.is_stopped():
+		if can_grab:
+			if len(grabbable_objects) > 0:
+				held_object = grabbable_objects.pop_front()
+				held_object.grab(self)
+				can_grab = false
+				can_throw = true
+			elif $GrabComponent/GrabTimer.is_stopped():
+				$GrabComponent/GrabTimer.start()
+	if Input.is_action_just_released("Jump") and !$ShortHopTimer.is_stopped():
 		is_short_hopping = true
-	if short_hop_timer.is_stopped() and is_short_hopping:
+	if $ShortHopTimer.is_stopped() and is_short_hopping:
 		stop_jump()
 	if is_on_floor():
 		is_jumping = false
@@ -73,7 +87,7 @@ func handle_jumping():
 # Player jump
 func jump():
 	is_jumping = true
-	short_hop_timer.start()
+	$ShortHopTimer.start()
 	jump_tween()
 	#AudioManager.jump_sfx.play()
 	velocity.y = -jump_force
@@ -121,3 +135,10 @@ func jump_tween():
 	tween.tween_property(self, "scale", Vector2(0.7, 1.4), 0.1)
 	tween.tween_property(self, "scale", Vector2.ONE, 0.1)
 
+func _on_grab_component_area_entered(area):
+	if area.name == "GrabComponent":
+		grabbable_objects.append(area.get_parent())
+
+func _on_grab_component_area_exited(area):
+	if area.name == "GrabComponent":
+		grabbable_objects.erase(area.get_parent())

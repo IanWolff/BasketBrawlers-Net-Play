@@ -39,6 +39,15 @@ zoom = Vector2(0.75, 0.75)
 [node name="Ball" parent="." instance=ExtResource("1_6l744")]
 position = Vector2(0, -28)
 collision_layer = 8
+gravity = 2000.0
+friction = 30.0
+bounce_power = 1.5
+minimum_speed = 100.0
+minimum_height_gain = 100.0
+max_speed = 400.0
+has_gravity = true
+has_friction = true
+speed = 0.0
 
 [node name="Player" parent="." instance=ExtResource("2_rsxgl")]
 position = Vector2(-223, -60)

@@ -8,11 +8,19 @@
 radius = 23.0
 
 [node name="Ball" type="CharacterBody2D" groups=["Ball"]]
-position = Vector2(0, -38.375)
 collision_layer = 3
 collision_mask = 3
 floor_stop_on_slope = false
 script = ExtResource("1_r6vw7")
+gravity = null
+friction = null
+bounce_power = null
+minimum_speed = null
+minimum_height_gain = null
+max_speed = null
+has_gravity = null
+has_friction = null
+speed = null
 
 [node name="Sprite2D" type="Sprite2D" parent="." groups=["Ball"]]
 scale = Vector2(0.0869772, 0.0869772)

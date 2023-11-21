@@ -12,6 +12,8 @@ class_name Ball
 @export_category("Toggle Functions")
 @export var has_gravity : bool = true
 @export var has_friction : bool = true
+@export var can_move : bool = true
+@export var is_held : bool = false
 
 @export_category("Ball Values") # You can tweak these changes according to your likings
 @export var speed: float = 0.0
@@ -27,24 +29,39 @@ func _ready():
 	velocity.x = rand.randf_range(-500,500)
 
 func _physics_process(delta):
-	speed = velocity.length()
-	var collision_info : KinematicCollision2D = move_and_collide(velocity * delta)
-	if collision_info:
-		velocity = velocity.bounce(collision_info.get_normal())
-		if velocity.x > 0:
-			velocity.x -= friction * delta
-		elif velocity.x < 0:
-			velocity.x += friction * delta
-		else:
-			velocity.x += rand.randf_range(-5,5)
-	if has_gravity:
-		velocity.y += gravity * delta
+	if can_move:
+		speed = velocity.length()
+		var collision_info : KinematicCollision2D = move_and_collide(velocity * delta)
+		if collision_info:
+			velocity = velocity.bounce(collision_info.get_normal())
+			if velocity.x > 0:
+				velocity.x -= friction * delta
+			elif velocity.x < 0:
+				velocity.x += friction * delta
+			else:
+				velocity.x += rand.randf_range(-5,5)
+		if has_gravity:
+			velocity.y += gravity * delta
 
 func grab(grabbing_player : Player) -> bool:
-	if is_grabbable && grab_candidates.has(grabbing_player):
+	if is_grabbable:
 		print("You grabbed it!")
+		self.reparent(grabbing_player)
+		can_move = false
+		is_held = true
+		position.x = 0
+		position.y = -38
+		scale.x = 1
+		scale.y = 1
 		return true
 	return false
+
+func drop(thrower_velocity : Vector2):
+	if is_held:
+		can_move = true
+		velocity = thrower_velocity
+		scale.x = 1
+		scale.y = 1
 
 func _on_grab_component_area_entered(area):
 	if area is GrabComponent:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://w7m6tehvvy3g"]
+[gd_scene load_steps=14 format=3 uid="uid://w7m6tehvvy3g"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_0dwpp"]
 [ext_resource type="Texture2D" uid="uid://cbss87b7xk5lc" path="res://Assets/Spritesheet/platformerPack_character.png" id="2_q0cxm"]
@@ -54,6 +54,9 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vheck"]
 size = Vector2(53, 68)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_rh2x6"]
+radius = 56.4026
+
 [sub_resource type="Curve" id="Curve_m2jh0"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.246032, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
@@ -75,12 +78,16 @@ animation = &"Walk"
 position = Vector2(0.5, 14)
 shape = SubResource("RectangleShape2D_vheck")
 
-[node name="GrabComponent" parent="." instance=ExtResource("3_c8tov")]
+[node name="GrabComponent" parent="." groups=["GrabComponent"] instance=ExtResource("3_c8tov")]
 collision_layer = 4
 collision_mask = 8
 
-[node name="GrabHitbox" type="CollisionShape2D" parent="GrabComponent" groups=["Player"]]
-shape = SubResource("RectangleShape2D_vheck")
+[node name="GrabHitbox" type="CollisionShape2D" parent="GrabComponent" groups=["GrabComponent", "Player"]]
+shape = SubResource("CircleShape2D_rh2x6")
+
+[node name="GrabTimer" type="Timer" parent="GrabComponent"]
+wait_time = 0.2
+one_shot = true
 
 [node name="ParticleTrails" type="CPUParticles2D" parent="."]
 position = Vector2(0, 42)
@@ -127,3 +134,6 @@ one_shot = true
 [node name="CoyoteTimer" type="Timer" parent="."]
 wait_time = 0.12
 one_shot = true
+
+[connection signal="area_entered" from="GrabComponent" to="." method="_on_grab_component_area_entered"]
+[connection signal="area_exited" from="GrabComponent" to="." method="_on_grab_component_area_exited"]
