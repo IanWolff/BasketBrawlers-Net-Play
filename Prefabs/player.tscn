@@ -96,6 +96,10 @@ one_shot = true
 wait_time = 0.2
 one_shot = true
 
+[node name="ThrowLag" type="Timer" parent="GrabComponent"]
+wait_time = 0.2
+one_shot = true
+
 [node name="ParticleTrails" type="CPUParticles2D" parent="."]
 position = Vector2(0, 42)
 emitting = false

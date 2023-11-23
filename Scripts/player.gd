@@ -16,6 +16,7 @@ class_name Player
 @export var is_holding_object : bool = false
 @export var can_move : bool = true
 @export var can_action : bool = true
+@export var can_grab: bool = true
 
 # Player graphics
 @onready var player_sprite : AnimatedSprite2D = $AnimatedSprite2D
@@ -31,7 +32,7 @@ var grabbable_objects : Array[Ball] = []
 var held_object
 
 func _ready():
-	#$GrabComponent/GrabHitbox.hide()
+	$GrabComponent.hide()
 	pass
 
 func _process(_delta):
@@ -60,19 +61,23 @@ func movement():
 
 func handle_timers():
 	if !$GrabComponent/GrabTimer.is_stopped() and !is_holding_object:
-		#$GrabComponent/GrabHitbox.hide()
 		grab()
-	elif $GrabComponent/ThrowTimer.is_stopped() and is_holding_object:
-		throw(toss_strength, throw_velocity)
+	elif $GrabComponent/ThrowTimer.is_stopped():
+		if is_holding_object:
+			throw(toss_strength, throw_velocity)
+		else:
+			$GrabComponent.hide()
 	elif $ShortHopTimer.is_stopped() and is_short_hopping:
 		stop_jump()
+	if $GrabComponent/ThrowLag.is_stopped() and !can_grab and is_on_floor():
+		can_grab = true
 
 # Handles jumping functionality
 func handle_actions():
 	if Input.is_action_just_pressed("Jump") and can_move:
 		if (is_on_floor() or !$CoyoteTimer.is_stopped()):
 			jump()
-	elif Input.is_action_just_pressed("Grab") and can_action:
+	elif Input.is_action_just_pressed("Grab") and can_action and can_grab:
 		if !is_holding_object:
 			initiate_grab()
 		else:
@@ -97,6 +102,7 @@ func jump():
 	#AudioManager.jump_sfx.play()
 
 func initiate_grab():
+	$GrabComponent.show()
 	$GrabComponent/GrabTimer.start()
 	grab()
 	#$GrabComponent/GrabHitbox.show()
@@ -136,7 +142,7 @@ func initiate_throw():
 	elif Input.is_action_pressed("Right"):
 		throw_velocity = Vector2.RIGHT + (0.25 * Vector2.UP)
 	else:
-		throw_velocity = forward_vector
+		throw_velocity = Vector2.UP
 
 # Drops the currently held object
 func throw(strength: float, ball_velocity : Vector2):
@@ -147,7 +153,12 @@ func throw(strength: float, ball_velocity : Vector2):
 	# Handle states
 	is_holding_object = false
 	can_move = true
+	$GrabComponent.hide()
 	$GrabComponent/ThrowTimer.stop()
+	# Handle lag
+	$GrabComponent/ThrowLag.start()
+	can_grab = false
+	$GrabComponent.hide()
 	
 # Short hop
 func stop_jump():

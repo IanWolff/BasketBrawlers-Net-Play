@@ -13,6 +13,7 @@ class_name Ball
 @export var has_gravity : bool = true
 @export var has_friction : bool = true
 @export var can_move : bool = true
+@export var can_be_grabbed : bool = true
 @export var is_held : bool = false
 
 @export_category("Ball Values") # You can tweak these changes according to your likings
@@ -41,9 +42,12 @@ func _physics_process(delta):
 				velocity.x += rand.randf_range(-5,5)
 		if has_gravity:
 			velocity.y += gravity * delta
+	if can_be_grabbed:
+		$GrabComponent.show()
+	else:
+		$GrabComponent.hide()
 
 func grab(grabbing_player : Player):
-	print("You grabbed it!")
 	self.reparent(grabbing_player)
 	can_move = false
 	is_held = true
