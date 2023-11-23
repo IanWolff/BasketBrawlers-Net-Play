@@ -3,19 +3,19 @@ class_name Player
 
 @export_category("Player Properties")
 @export var move_speed : float = 400.0
+@export var throw_strength : float = 35.0
 @export var jump_force : float = 1000.0
 @export var gravity : float = 16.0
 @export var max_jump_count : int = 2
 
-@export_category("Toggle Functions")
-@export var double_jump : bool = false
-
 @export_category("Player States")
 @export var is_grounded : bool = false
 @export var is_short_hopping : bool = false
+@export var is_throwing : bool = false
 @export var is_jumping : bool = false
 @export var can_grab : bool = true
 @export var can_throw : bool = false
+@export var can_move : bool = true
 
 # Player graphics
 @onready var player_sprite : AnimatedSprite2D = $AnimatedSprite2D
@@ -24,9 +24,12 @@ class_name Player
 
 var jump_count : int = 2
 var was_on_floor : bool = false
+var throw_velocity : Vector2 = Vector2.ZERO
+var forward_direction : String = "RIGHT"
 
 var grabbable_objects : Array[Ball] = []
 var held_object
+
 
 func _process(_delta):
 	movement()
@@ -37,53 +40,61 @@ func _process(_delta):
 func movement():
 	# Apply gravity to Player
 	if !is_on_floor():
-		velocity.y += gravity
+		if is_throwing:
+			velocity.y += 0.1 * gravity
+		else:
+			velocity.y += gravity
 	elif is_on_floor():
 		jump_count = max_jump_count
 	
 	# Handle jumping and set variables for coyote time
 	handle_actions()
+	handle_timers()
+	
 	was_on_floor = is_on_floor()
 	
 	# Move Player
-	var inputAxis = Input.get_axis("Left", "Right")
-	velocity = Vector2(inputAxis * move_speed, velocity.y)
-	move_and_slide()
+	if can_move and !is_throwing:	
+		var inputAxis = Input.get_axis("Left", "Right")
+		velocity = Vector2(inputAxis * move_speed, velocity.y)
+		move_and_slide()
 	
 	if was_on_floor and !is_on_floor():
 		$CoyoteTimer.start()
 
+func handle_timers():
+	if $GrabComponent/ThrowTimer.is_stopped() and is_throwing:
+		throw(throw_velocity * throw_strength)
+	if $ShortHopTimer.is_stopped() and is_short_hopping:
+		stop_jump()
 
-# Handles jumping functionality (double jump or single jump, can be toggled from inspector)
+# Handles jumping functionality
 func handle_actions():
-	if Input.is_action_just_pressed("Jump"):
-		if (is_on_floor() or !$CoyoteTimer.is_stopped()) and !double_jump:
+	if Input.is_action_just_pressed("Jump") and can_move:
+		if (is_on_floor() or !$CoyoteTimer.is_stopped()):
 			jump()
-		elif double_jump and jump_count > 0:
-			jump()
-			jump_count -= 1
 	elif Input.is_action_just_pressed("Grab-Drop"):
 		if can_throw:
 			drop_held_object()
 		elif can_grab:
 			grab()
-	elif !$GrabComponent/GrabTimer.is_stopped() and can_grab:
-		grab()
-	if Input.is_action_just_released("Jump") and !$ShortHopTimer.is_stopped():
+	elif Input.is_action_just_pressed("Throw") and $GrabComponent/ThrowTimer.is_stopped():
+		if can_throw:
+			initiate_throw()
+	if Input.is_action_just_released("Jump") and !$ShortHopTimer.is_stopped() and can_move:
 		is_short_hopping = true
-	if $ShortHopTimer.is_stopped() and is_short_hopping:
-		stop_jump()
+	# Reset player jump states
 	if is_on_floor():
 		is_jumping = false
 		is_short_hopping = false
-		
+	
 # Player jump
 func jump():
 	is_jumping = true
+	velocity.y = -jump_force
 	$ShortHopTimer.start()
 	jump_tween()
 	#AudioManager.jump_sfx.play()
-	velocity.y = -jump_force
 
 # Drops the currently held object
 func grab():
@@ -92,17 +103,44 @@ func grab():
 		held_object.grab(self)
 		can_grab = false
 		can_throw = true
-		return true
-	elif $GrabComponent/GrabTimer.is_stopped():
-		$GrabComponent/GrabTimer.start()
 
 # Drops the currently held object
 func drop_held_object():
 	held_object.reparent(self.get_parent())
 	held_object.drop(velocity)
+	held_object = null
 	can_grab = true
 	can_throw = false
 
+func initiate_throw():
+	can_grab = false
+	can_throw = false
+	can_move = false
+	is_throwing = true
+	if Input.is_action_pressed("Up"):
+		throw_velocity = Vector2.UP
+	elif Input.is_action_pressed("Down"):
+		throw_velocity = Vector2.DOWN
+	elif Input.is_action_pressed("Left"):
+		throw_velocity = Vector2.LEFT
+	elif Input.is_action_pressed("Right"):
+		throw_velocity = Vector2.RIGHT
+	elif forward_direction == "LEFT":
+		throw_velocity = Vector2.LEFT
+	elif forward_direction == "RIGHT":
+		throw_velocity = Vector2.RIGHT
+	$GrabComponent/ThrowTimer.start()
+
+# Drops the currently held object
+func throw(velocity : Vector2):
+	held_object.reparent(self.get_parent())
+	held_object.drop(throw_strength * velocity)
+	held_object = null
+	can_grab = true
+	can_throw = false
+	is_throwing = false
+	can_move = true
+	
 # Short hop
 func stop_jump():
 	if velocity.y < -100:
@@ -123,8 +161,10 @@ func player_animations():
 # Flip player sprite based on X velocity
 func flip_player():
 	if velocity.x < 0: 
+		forward_direction = "LEFT"
 		player_sprite.flip_h = true
 	elif velocity.x > 0:
+		forward_direction = "RIGHT"
 		player_sprite.flip_h = false
 
 # Tween Animations
