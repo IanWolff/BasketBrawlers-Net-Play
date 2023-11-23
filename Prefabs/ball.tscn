@@ -33,6 +33,3 @@ light_mask = 4
 visibility_layer = 4
 position = Vector2(-0.5, -14)
 shape = SubResource("CircleShape2D_5up0g")
-
-[connection signal="area_entered" from="GrabComponent" to="." method="_on_grab_component_area_entered"]
-[connection signal="area_shape_exited" from="GrabComponent" to="." method="_on_grab_component_area_shape_exited"]
