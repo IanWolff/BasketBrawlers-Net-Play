@@ -15,11 +15,13 @@ class_name Ball
 @export var can_move : bool = true
 @export var can_be_grabbed : bool = true
 @export var is_held : bool = false
+@export var is_scorable : bool = false
 
 @export_category("Ball Values") # You can tweak these changes according to your likings
 @export var speed: float = 0.0
 
 var rand : RandomNumberGenerator = RandomNumberGenerator.new()
+var bounce_count : int = 0
 
 # Ball States
 var is_grabbable : bool = false
@@ -27,8 +29,12 @@ var is_grabbable : bool = false
 func _ready():
 	velocity.y = rand.randf_range(-1500,-500)
 	velocity.x = rand.randf_range(-500,500)
+	$Sprite2D.modulate = Color(255,255,255)
 
 func _physics_process(delta):
+	if is_scorable && $ActivateTimer.is_stopped():
+		is_scorable = false
+		$Sprite2D.modulate = Color(255,255,255)
 	if can_move:
 		speed = velocity.length()
 		var collision_info : KinematicCollision2D = move_and_collide(velocity * delta)
@@ -62,3 +68,11 @@ func drop(thrower_velocity : Vector2):
 		velocity = thrower_velocity
 		scale.x = 1
 		scale.y = 1
+
+
+
+func activate(player : Player):
+	$Sprite2D.modulate = player.get_color()
+	is_scorable = true
+	$ActivateTimer.start()
+	pass

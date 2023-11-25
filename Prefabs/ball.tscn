@@ -1,35 +1,23 @@
-[gd_scene load_steps=5 format=3 uid="uid://bu3tur2xlhsd5"]
+[gd_scene load_steps=4 format=3 uid="uid://bu3tur2xlhsd5"]
 
-[ext_resource type="Script" path="res://Scripts/ball.gd" id="1_r6vw7"]
-[ext_resource type="Texture2D" uid="uid://c45fsv2au5jiv" path="res://Assets/Textures/BallTexture.png" id="2_e4p3f"]
-[ext_resource type="PackedScene" uid="uid://dt40yv1l31o7n" path="res://Components/grab_component.tscn" id="3_fyg2n"]
+[ext_resource type="Script" path="res://scripts/hoop.gd" id="1_7o4e7"]
+[ext_resource type="Texture2D" uid="uid://c45fsv2au5jiv" path="res://assets/Textures/BallTexture.png" id="2_agtv1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5up0g"]
 radius = 23.0
 
-[node name="Ball" type="CharacterBody2D" groups=["Ball"]]
+[node name="hoop" type="CharacterBody2D" groups=["Ball"]]
 position = Vector2(0, -38.375)
 collision_layer = 3
 collision_mask = 3
 floor_stop_on_slope = false
-script = ExtResource("1_r6vw7")
+script = ExtResource("1_7o4e7")
 
 [node name="Sprite2D" type="Sprite2D" parent="." groups=["Ball"]]
 scale = Vector2(0.0869772, 0.0869772)
-texture = ExtResource("2_e4p3f")
+texture = ExtResource("2_agtv1")
 
 [node name="Collision" type="CollisionShape2D" parent="." groups=["Ball"]]
 light_mask = 4
 visibility_layer = 4
-shape = SubResource("CircleShape2D_5up0g")
-
-[node name="GrabComponent" parent="." instance=ExtResource("3_fyg2n")]
-collision_layer = 8
-collision_mask = 4
-script = null
-
-[node name="GrabHitbox" type="CollisionShape2D" parent="GrabComponent" groups=["Ball"]]
-light_mask = 4
-visibility_layer = 4
-position = Vector2(-0.5, -14)
 shape = SubResource("CircleShape2D_5up0g")

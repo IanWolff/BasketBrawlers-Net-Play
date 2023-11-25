@@ -3,7 +3,7 @@ class_name Player
 
 @export_category("Player Properties")
 @export var move_speed : float = 400.0
-@export var toss_strength : float = 500.0
+@export var toss_strength : float = 700.0
 @export var throw_strength : float = 1200.0
 @export var jump_force : float = 1000.0
 @export var gravity : float = 16.0
@@ -27,6 +27,7 @@ var jump_count : int = 2
 var was_on_floor : bool = false
 var throw_velocity : Vector2 = Vector2.UP
 @export var forward_vector : Vector2 = Vector2.RIGHT
+var player_color : Color = Color.RED
 
 var grabbable_objects : Array[Ball] = []
 var held_object
@@ -39,6 +40,9 @@ func _process(_delta):
 	movement()
 	player_animations()
 	flip_player()
+
+func get_color() -> Color:
+	return player_color
 
 # Player Movement Code
 func movement():
@@ -126,13 +130,13 @@ func drop_held_object():
 
 func initiate_throw():
 	if Input.is_action_pressed("Up") and Input.is_action_pressed("Left") :
-		throw_velocity = 0.75 * (Vector2.UP + Vector2.LEFT)
+		throw_velocity = 0.75 * (Vector2.UP + (0.75 * Vector2.LEFT))
 	elif Input.is_action_pressed("Up") and Input.is_action_pressed("Right") :
-		throw_velocity = 0.75 * (Vector2.UP + Vector2.RIGHT)
+		throw_velocity = 0.75 * (Vector2.UP + (0.75 * Vector2.RIGHT))
 	elif Input.is_action_pressed("Down") and Input.is_action_pressed("Left") :
-		throw_velocity = 0.75 * (Vector2.DOWN + Vector2.LEFT)
+		throw_velocity = 0.75 * (Vector2.DOWN + (0.75 * Vector2.LEFT))
 	elif Input.is_action_pressed("Down") and Input.is_action_pressed("Right") :
-		throw_velocity = 0.75 * (Vector2.DOWN + Vector2.RIGHT)
+		throw_velocity = 0.75 * (Vector2.DOWN + (0.75 * Vector2.RIGHT))
 	elif Input.is_action_pressed("Up"):
 		throw_velocity = Vector2.UP
 	elif Input.is_action_pressed("Down"):
@@ -148,6 +152,8 @@ func initiate_throw():
 func throw(strength: float, ball_velocity : Vector2):
 	held_object.reparent(self.get_parent())
 	held_object.drop(strength * ball_velocity)
+	if strength == throw_strength:
+		held_object.activate(self)
 	held_object = null
 	throw_velocity = Vector2.UP
 	# Handle states

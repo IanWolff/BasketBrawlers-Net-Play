@@ -12,7 +12,7 @@ config_version=5
 
 config/name="NetSmash"
 config/tags=PackedStringArray("starterkit")
-run/main_scene="res://Levels/prototype.tscn"
+run/main_scene="res://levels/prototype.tscn"
 config/features=PackedStringArray("4.1", "Forward Plus")
 boot_splash/bg_color=Color(0.105882, 0.458824, 0.733333, 1)
 boot_splash/show_image=false
