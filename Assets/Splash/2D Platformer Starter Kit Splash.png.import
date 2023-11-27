@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://h8g43go5ykaq"
-path="res://.godot/imported/2D Platformer Starter Kit Splash.png-d2864ca8c945c1c7a9f0b5e892f3a8a6.ctex"
+path="res://.godot/imported/2D Platformer Starter Kit Splash.png-d972f2e14cecb452cde2d303950525c2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Splash/2D Platformer Starter Kit Splash.png"
-dest_files=["res://.godot/imported/2D Platformer Starter Kit Splash.png-d2864ca8c945c1c7a9f0b5e892f3a8a6.ctex"]
+source_file="res://assets/Splash/2D Platformer Starter Kit Splash.png"
+dest_files=["res://.godot/imported/2D Platformer Starter Kit Splash.png-d972f2e14cecb452cde2d303950525c2.ctex"]
 
 [params]
 
