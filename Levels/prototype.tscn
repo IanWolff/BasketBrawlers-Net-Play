@@ -1,11 +1,11 @@
 [gd_scene load_steps=6 format=3 uid="uid://c33rba2x8q1ki"]
 
-[ext_resource type="PackedScene" uid="uid://bu3tur2xlhsd5" path="res://prefabs/ball.tscn" id="1_jx2do"]
-[ext_resource type="PackedScene" uid="uid://w7m6tehvvy3g" path="res://prefabs/player.tscn" id="2_ipnue"]
-[ext_resource type="Texture2D" uid="uid://jaegp53ccc7w" path="res://assets/Spritesheet/platformPack_tilesheet.png" id="3_gtmjd"]
+[ext_resource type="PackedScene" uid="uid://bu3tur2xlhsd5" path="res://Prefabs/ball.tscn" id="1_6l744"]
+[ext_resource type="PackedScene" uid="uid://w7m6tehvvy3g" path="res://Prefabs/player.tscn" id="2_rsxgl"]
+[ext_resource type="Texture2D" uid="uid://jaegp53ccc7w" path="res://Assets/Spritesheet/platformPack_tilesheet.png" id="3_rdf4y"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gnxdt"]
-texture = ExtResource("3_gtmjd")
+texture = ExtResource("3_rdf4y")
 texture_region_size = Vector2i(64, 64)
 6:1/0 = 0
 6:1/0/terrain_set = 0
@@ -36,11 +36,11 @@ sources/0 = SubResource("TileSetAtlasSource_gnxdt")
 position = Vector2(0, -324)
 zoom = Vector2(0.75, 0.75)
 
-[node name="Ball" parent="." instance=ExtResource("1_jx2do")]
+[node name="Ball" parent="." instance=ExtResource("1_6l744")]
 position = Vector2(0, -28)
 collision_layer = 8
 
-[node name="Player" parent="." instance=ExtResource("2_ipnue")]
+[node name="Player" parent="." instance=ExtResource("2_rsxgl")]
 position = Vector2(-223, -60)
 collision_layer = 4
 
