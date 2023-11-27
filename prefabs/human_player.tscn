@@ -1,6 +1,5 @@
-[gd_scene load_steps=14 format=3 uid="uid://w7m6tehvvy3g"]
+[gd_scene load_steps=13 format=3 uid="uid://w7m6tehvvy3g"]
 
-[ext_resource type="Script" path="res://Scripts/player.gd" id="1_0dwpp"]
 [ext_resource type="Texture2D" uid="uid://cbss87b7xk5lc" path="res://assets/Spritesheet/platformerPack_character.png" id="2_q0cxm"]
 [ext_resource type="Texture2D" uid="uid://dxp77wq60c2rr" path="res://assets/Textures/CloudTexture.png" id="3_8vxmb"]
 [ext_resource type="PackedScene" uid="uid://dt40yv1l31o7n" path="res://components/grab_component.tscn" id="3_c8tov"]
@@ -67,9 +66,8 @@ offsets = PackedFloat32Array(0.25, 1)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
-collision_layer = 3
+collision_layer = 4
 collision_mask = 3
-script = ExtResource("1_0dwpp")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." groups=["Player"]]
 sprite_frames = SubResource("SpriteFrames_4nss6")

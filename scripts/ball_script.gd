@@ -1,5 +1,4 @@
 extends CharacterBody2D
-class_name Ball
 
 @export_category("Ball Properties") # You can tweak these changes according to your likings
 @export var gravity: float = 2000
@@ -47,7 +46,7 @@ func _physics_process(delta):
 	else:
 		$GrabComponent.hide()
 
-func grab(grabbing_player : HumanPlayer):
+func grab(grabbing_player):
 	self.reparent(grabbing_player)
 	can_move = false
 	is_held = true

@@ -1,9 +1,8 @@
 extends CharacterBody2D
-class_name HumanPlayer
 
 @export_category("Player Properties")
 @export var move_speed : float = 500.0
-@export var toss_strength : float = 500.0
+@export var toss_strength : float = 700.0
 @export var throw_strength : float = 1200.0
 @export var jump_force : float = 1000.0
 @export var gravity : float = 16.0
@@ -28,7 +27,7 @@ var was_on_floor : bool = false
 var throw_velocity : Vector2 = Vector2.UP
 @export var forward_vector : Vector2 = Vector2.RIGHT
 
-var grabbable_objects : Array[Ball] = []
+var grabbable_objects : Array = []
 var held_object
 
 func _ready():
@@ -134,7 +133,7 @@ func initiate_throw():
 	elif Input.is_action_pressed("Down") and Input.is_action_pressed("Right") :
 		throw_velocity = 0.80 * (Vector2.DOWN + (0.5 * Vector2.RIGHT))
 	elif Input.is_action_pressed("Up"):
-		throw_velocity = Vector2.UP
+		throw_velocity = 0.90 * (Vector2.UP + (0.2 * forward_vector))
 	elif Input.is_action_pressed("Down"):
 		throw_velocity = Vector2.DOWN
 	elif Input.is_action_pressed("Left"):
@@ -142,7 +141,7 @@ func initiate_throw():
 	elif Input.is_action_pressed("Right"):
 		throw_velocity = Vector2.RIGHT + (0.25 * Vector2.UP)
 	else:
-		throw_velocity = Vector2.UP
+		throw_velocity = 0.90 * (Vector2.UP + (0.2 * forward_vector))
 
 # Drops the currently held object
 func throw(strength: float, ball_velocity : Vector2):
@@ -184,12 +183,12 @@ func flip_player():
 			#if forward_vector == Vector2.LEFT:
 				#self.scale.x = 1
 				player_sprite.flip_h = true
-				forward_vector = Vector2.RIGHT
+				forward_vector = Vector2.LEFT
 		elif Input.get_axis("Left", "Right") > 0:
 			#if forward_vector == Vector2.RIGHT:
 				#self.scale.x = -1
 				player_sprite.flip_h = false
-				forward_vector = Vector2.LEFT
+				forward_vector = Vector2.RIGHT
 
 # Tween Animations
 func death_tween():

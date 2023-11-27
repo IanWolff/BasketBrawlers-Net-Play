@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3 uid="uid://7memcylkg6sx"]
+
+[ext_resource type="Texture2D" uid="uid://b3i60a6ble1g2" path="res://assets/Textures/Hoop.png" id="2_mh7lc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uvxgw"]
+size = Vector2(69, 2.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4lp02"]
+size = Vector2(72, 6)
+
+[node name="Hoop" type="CharacterBody2D"]
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_mh7lc")
+
+[node name="ScoreArea" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 8
+
+[node name="ScorableArea" type="CollisionShape2D" parent="ScoreArea"]
+position = Vector2(-27, -23)
+shape = SubResource("RectangleShape2D_uvxgw")
+
+[node name="TriggerArea" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 8
+
+[node name="ScoreTrigger" type="CollisionShape2D" parent="TriggerArea"]
+position = Vector2(-27, -55)
+shape = SubResource("RectangleShape2D_4lp02")
+
+[connection signal="area_entered" from="ScoreArea" to="." method="_on_score_area_area_entered"]
+[connection signal="area_entered" from="TriggerArea" to="." method="_on_trigger_area_area_entered"]
+[connection signal="area_exited" from="TriggerArea" to="." method="_on_trigger_area_area_exited"]
