@@ -1,8 +1,8 @@
 extends CharacterBody2D
-class_name Player
+class_name HumanPlayer
 
 @export_category("Player Properties")
-@export var move_speed : float = 400.0
+@export var move_speed : float = 500.0
 @export var toss_strength : float = 500.0
 @export var throw_strength : float = 1200.0
 @export var jump_force : float = 1000.0
@@ -67,7 +67,7 @@ func handle_timers():
 			throw(toss_strength, throw_velocity)
 		else:
 			$GrabComponent.hide()
-	elif $ShortHopTimer.is_stopped() and is_short_hopping:
+	if $ShortHopTimer.is_stopped() and is_short_hopping:
 		stop_jump()
 	if $GrabComponent/ThrowLag.is_stopped() and !can_grab and is_on_floor():
 		can_grab = true
@@ -130,9 +130,9 @@ func initiate_throw():
 	elif Input.is_action_pressed("Up") and Input.is_action_pressed("Right") :
 		throw_velocity = 0.75 * (Vector2.UP + Vector2.RIGHT)
 	elif Input.is_action_pressed("Down") and Input.is_action_pressed("Left") :
-		throw_velocity = 0.75 * (Vector2.DOWN + Vector2.LEFT)
+		throw_velocity = 0.80 * (Vector2.DOWN + (0.5 * Vector2.LEFT))
 	elif Input.is_action_pressed("Down") and Input.is_action_pressed("Right") :
-		throw_velocity = 0.75 * (Vector2.DOWN + Vector2.RIGHT)
+		throw_velocity = 0.80 * (Vector2.DOWN + (0.5 * Vector2.RIGHT))
 	elif Input.is_action_pressed("Up"):
 		throw_velocity = Vector2.UP
 	elif Input.is_action_pressed("Down"):

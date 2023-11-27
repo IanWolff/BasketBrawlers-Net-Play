@@ -1,0 +1,164 @@
+[gd_scene load_steps=14 format=3 uid="uid://w7m6tehvvy3g"]
+
+[ext_resource type="Script" path="res://Scripts/player.gd" id="1_0dwpp"]
+[ext_resource type="Texture2D" uid="uid://cbss87b7xk5lc" path="res://assets/Spritesheet/platformerPack_character.png" id="2_q0cxm"]
+[ext_resource type="Texture2D" uid="uid://dxp77wq60c2rr" path="res://assets/Textures/CloudTexture.png" id="3_8vxmb"]
+[ext_resource type="PackedScene" uid="uid://dt40yv1l31o7n" path="res://components/grab_component.tscn" id="3_c8tov"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_57bci"]
+atlas = ExtResource("2_q0cxm")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y2um1"]
+atlas = ExtResource("2_q0cxm")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cjvmv"]
+atlas = ExtResource("2_q0cxm")
+region = Rect2(192, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k3yh2"]
+atlas = ExtResource("2_q0cxm")
+region = Rect2(288, 0, 96, 96)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4nss6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_57bci")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y2um1")
+}],
+"loop": true,
+"name": &"Jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cjvmv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k3yh2")
+}],
+"loop": true,
+"name": &"Walk",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vheck"]
+size = Vector2(53, 68)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_71x7e"]
+radius = 54.0
+height = 126.0
+
+[sub_resource type="Curve" id="Curve_m2jh0"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.246032, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_3gc37"]
+offsets = PackedFloat32Array(0.25, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+
+[node name="Player" type="CharacterBody2D" groups=["Player"]]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_0dwpp")
+move_speed = null
+toss_strength = null
+throw_strength = null
+jump_force = null
+gravity = null
+max_jump_count = null
+is_grounded = null
+is_short_hopping = null
+is_jumping = null
+is_holding_object = null
+can_move = null
+can_action = null
+can_grab = null
+forward_vector = null
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." groups=["Player"]]
+sprite_frames = SubResource("SpriteFrames_4nss6")
+animation = &"Walk"
+
+[node name="Collision" type="CollisionShape2D" parent="." groups=["Player"]]
+position = Vector2(0.5, 14)
+shape = SubResource("RectangleShape2D_vheck")
+
+[node name="GrabComponent" parent="." groups=["GrabComponent"] instance=ExtResource("3_c8tov")]
+position = Vector2(0, 0)
+collision_layer = 4
+collision_mask = 8
+script = null
+
+[node name="GrabHitbox" type="CollisionShape2D" parent="GrabComponent" groups=["GrabComponent", "Player"]]
+shape = SubResource("CapsuleShape2D_71x7e")
+
+[node name="ThrowTimer" type="Timer" parent="GrabComponent"]
+wait_time = 0.5
+one_shot = true
+
+[node name="GrabTimer" type="Timer" parent="GrabComponent"]
+wait_time = 0.2
+one_shot = true
+
+[node name="ThrowLag" type="Timer" parent="GrabComponent"]
+wait_time = 0.2
+one_shot = true
+
+[node name="ParticleTrails" type="CPUParticles2D" parent="."]
+position = Vector2(0, 42)
+emitting = false
+amount = 20
+lifetime = 0.4
+speed_scale = 0.8
+texture = ExtResource("3_8vxmb")
+emission_shape = 1
+emission_sphere_radius = 5.0
+direction = Vector2(0, 0)
+gravity = Vector2(0, 0)
+damping_min = 1.0
+damping_max = 1.0
+scale_amount_min = 0.2
+scale_amount_max = 0.6
+scale_amount_curve = SubResource("Curve_m2jh0")
+color_ramp = SubResource("Gradient_3gc37")
+
+[node name="DeathParticles" type="CPUParticles2D" parent="."]
+position = Vector2(23, 11)
+emitting = false
+amount = 20
+lifetime = 0.6
+one_shot = true
+speed_scale = 1.2
+explosiveness = 1.0
+lifetime_randomness = 0.4
+emission_shape = 2
+emission_sphere_radius = 50.0
+direction = Vector2(0, 0)
+gravity = Vector2(0, 0)
+damping_min = 1.0
+damping_max = 1.0
+scale_amount_min = 15.0
+scale_amount_max = 30.0
+scale_amount_curve = SubResource("Curve_m2jh0")
+color_ramp = SubResource("Gradient_3gc37")
+
+[node name="ShortHopTimer" type="Timer" parent="."]
+wait_time = 0.12
+one_shot = true
+
+[node name="CoyoteTimer" type="Timer" parent="."]
+wait_time = 0.12
+one_shot = true
+
+[connection signal="area_entered" from="GrabComponent" to="." method="_on_grab_component_area_entered"]
+[connection signal="area_exited" from="GrabComponent" to="." method="_on_grab_component_area_exited"]

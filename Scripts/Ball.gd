@@ -47,7 +47,7 @@ func _physics_process(delta):
 	else:
 		$GrabComponent.hide()
 
-func grab(grabbing_player : Player):
+func grab(grabbing_player : HumanPlayer):
 	self.reparent(grabbing_player)
 	can_move = false
 	is_held = true

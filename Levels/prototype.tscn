@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://c33rba2x8q1ki"]
 
 [ext_resource type="PackedScene" uid="uid://bu3tur2xlhsd5" path="res://prefabs/ball.tscn" id="1_6l744"]
-[ext_resource type="PackedScene" uid="uid://w7m6tehvvy3g" path="res://prefabs/player.tscn" id="2_rsxgl"]
+[ext_resource type="PackedScene" uid="uid://w7m6tehvvy3g" path="res://prefabs/human_player.tscn" id="2_rsxgl"]
 [ext_resource type="Texture2D" uid="uid://jaegp53ccc7w" path="res://assets/Spritesheet/platformPack_tilesheet.png" id="3_rdf4y"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gnxdt"]
