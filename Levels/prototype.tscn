@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://c33rba2x8q1ki"]
+[gd_scene load_steps=14 format=3 uid="uid://c33rba2x8q1ki"]
 
 [ext_resource type="PackedScene" uid="uid://bu3tur2xlhsd5" path="res://prefabs/ball.tscn" id="1_6l744"]
 [ext_resource type="Script" path="res://scripts/prototype_script.gd" id="1_g2ouy"]
@@ -15,6 +15,10 @@ height = 66.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3hj6a"]
 radius = 5.09902
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_qulkx"]
+a = Vector2(-23.6364, 0)
+b = Vector2(40.9091, 0)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gnxdt"]
 texture = ExtResource("3_rdf4y")
@@ -72,6 +76,12 @@ shape = SubResource("CapsuleShape2D_apypp")
 [node name="CollisionShape2D4" type="CollisionShape2D" parent="Hoop"]
 position = Vector2(-65, -38)
 shape = SubResource("CircleShape2D_3hj6a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hoop"]
+position = Vector2(-19.0909, -38.1818)
+rotation = -3.14159
+shape = SubResource("SegmentShape2D_qulkx")
+one_way_collision = true
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_1p7u0")

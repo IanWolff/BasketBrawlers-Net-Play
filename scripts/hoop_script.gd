@@ -22,15 +22,15 @@ func _on_trigger_area_area_entered(area):
 		print("Ball entered")
 		color_keep = $TriggerArea.modulate
 		$TriggerArea.modulate = Color.RED
-		$ScoreArea.show()
 		is_scorable = true
+		$ScoreArea.show()
 
 
 func _on_trigger_area_area_exited(area):
 	if area.get_parent().name == "Ball":
 		$TriggerArea.modulate = color_keep
-		$ScoreArea.hide()
 		is_scorable = false
+		$ScoreArea.hide()
 
 
 func _on_score_area_area_entered(area):
