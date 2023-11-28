@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://c33rba2x8q1ki"]
+[gd_scene load_steps=12 format=3 uid="uid://c33rba2x8q1ki"]
 
 [ext_resource type="PackedScene" uid="uid://bu3tur2xlhsd5" path="res://prefabs/ball.tscn" id="1_6l744"]
 [ext_resource type="Script" path="res://scripts/prototype_script.gd" id="1_g2ouy"]
@@ -7,20 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://7memcylkg6sx" path="res://prefabs/hoop.tscn" id="3_qflja"]
 [ext_resource type="Texture2D" uid="uid://jaegp53ccc7w" path="res://assets/Spritesheet/platformPack_tilesheet.png" id="3_rdf4y"]
 [ext_resource type="Script" path="res://scripts/player_script.gd" id="5_ftmnj"]
-[ext_resource type="Script" path="res://scripts/hoop_script.gd" id="7_porgq"]
+[ext_resource type="LabelSettings" uid="uid://brxhcaldjh8vf" path="res://components/score_label.tres" id="9_dhwhn"]
 [ext_resource type="Texture2D" uid="uid://dehehnrjm3my4" path="res://assets/Textures/Scoreboard.png" id="9_k6xg5"]
-[ext_resource type="FontFile" uid="uid://sawq0riypkdh" path="res://assets/Fonts/SfDigitalReadoutHeavy-AwVg.ttf" id="10_gnaau"]
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_apypp"]
-radius = 5.0
-height = 66.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_3hj6a"]
-radius = 5.09902
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_qulkx"]
-a = Vector2(-23.6364, 0)
-b = Vector2(40.9091, 0)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gnxdt"]
 texture = ExtResource("3_rdf4y")
@@ -48,11 +36,6 @@ terrain_set_0/terrain_0/name = "Wall"
 terrain_set_0/terrain_0/color = Color(0.72549, 0, 0.137255, 1)
 sources/0 = SubResource("TileSetAtlasSource_gnxdt")
 
-[sub_resource type="LabelSettings" id="LabelSettings_ecv2c"]
-font = ExtResource("10_gnaau")
-font_size = 65
-font_color = Color(0.74902, 0.980392, 0.607843, 1)
-
 [node name="Prototype" type="Node2D"]
 script = ExtResource("1_g2ouy")
 
@@ -68,27 +51,15 @@ script = ExtResource("3_46aek")
 position = Vector2(-223, -60)
 script = ExtResource("5_ftmnj")
 
-[node name="Hoop" parent="." instance=ExtResource("3_qflja")]
-position = Vector2(671, -269)
+[node name="RightHoop" parent="." instance=ExtResource("3_qflja")]
+position = Vector2(670, -270)
 scale = Vector2(1.1, 1.1)
 collision_layer = 11
 collision_mask = 11
-script = ExtResource("7_porgq")
 
-[node name="Back" type="CollisionShape2D" parent="Hoop"]
-position = Vector2(37, -38)
-rotation = -1.5708
-shape = SubResource("CapsuleShape2D_apypp")
-
-[node name="Rim" type="CollisionShape2D" parent="Hoop"]
-position = Vector2(-65, -38)
-shape = SubResource("CircleShape2D_3hj6a")
-
-[node name="Block" type="CollisionShape2D" parent="Hoop"]
-position = Vector2(-19.0909, -38.1818)
-rotation = -3.14159
-shape = SubResource("SegmentShape2D_qulkx")
-one_way_collision = true
+[node name="LeftHoop" parent="." instance=ExtResource("3_qflja")]
+position = Vector2(-670, -270)
+scale = Vector2(-1, 1)
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_1p7u0")
@@ -117,5 +88,19 @@ alignment = 1
 [node name="Label" type="Label" parent="ScoreBoard/HomeScore"]
 layout_mode = 2
 text = "0"
-label_settings = SubResource("LabelSettings_ecv2c")
+label_settings = ExtResource("9_dhwhn")
+horizontal_alignment = 1
+
+[node name="AwayScore" type="HBoxContainer" parent="ScoreBoard"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = -664.0
+offset_right = 98.0
+offset_bottom = -609.0
+alignment = 1
+
+[node name="Label" type="Label" parent="ScoreBoard/AwayScore"]
+layout_mode = 2
+text = "0"
+label_settings = ExtResource("9_dhwhn")
 horizontal_alignment = 1

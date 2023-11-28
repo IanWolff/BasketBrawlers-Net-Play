@@ -71,7 +71,6 @@ func handle_timers():
 	if $GrabComponent/ThrowLag.is_stopped() and !can_grab and is_on_floor():
 		can_grab = true
 
-# Handles jumping functionality
 func handle_actions():
 	if Input.is_action_just_pressed("Jump") and can_move:
 		if (is_on_floor() or !$CoyoteTimer.is_stopped()):

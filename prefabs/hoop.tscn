@@ -1,6 +1,18 @@
-[gd_scene load_steps=4 format=3 uid="uid://7memcylkg6sx"]
+[gd_scene load_steps=8 format=3 uid="uid://7memcylkg6sx"]
 
+[ext_resource type="Script" path="res://scripts/hoop_script.gd" id="1_ywv7y"]
 [ext_resource type="Texture2D" uid="uid://b3i60a6ble1g2" path="res://assets/Textures/Hoop.png" id="2_mh7lc"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vb0lr"]
+radius = 5.0
+height = 66.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1b60f"]
+radius = 5.09902
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_7bpio"]
+a = Vector2(-23.6364, 0)
+b = Vector2(40.9091, 0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uvxgw"]
 size = Vector2(107, 4)
@@ -9,10 +21,26 @@ size = Vector2(107, 4)
 size = Vector2(72, 6)
 
 [node name="Hoop" type="CharacterBody2D"]
+script = ExtResource("1_ywv7y")
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_mh7lc")
+
+[node name="Back" type="CollisionShape2D" parent="."]
+position = Vector2(37, -38)
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_vb0lr")
+
+[node name="Rim" type="CollisionShape2D" parent="."]
+position = Vector2(-65, -38)
+shape = SubResource("CircleShape2D_1b60f")
+
+[node name="Block" type="CollisionShape2D" parent="."]
+position = Vector2(-19.0909, -38.1818)
+rotation = -3.14159
+shape = SubResource("SegmentShape2D_7bpio")
+one_way_collision = true
 
 [node name="ScoreArea" type="Area2D" parent="."]
 collision_layer = 16

@@ -1,0 +1,8 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://brxhcaldjh8vf"]
+
+[ext_resource type="FontFile" uid="uid://sawq0riypkdh" path="res://assets/Fonts/SfDigitalReadoutHeavy-AwVg.ttf" id="1_c1gmn"]
+
+[resource]
+font = ExtResource("1_c1gmn")
+font_size = 65
+font_color = Color(0.74902, 0.980392, 0.607843, 1)
