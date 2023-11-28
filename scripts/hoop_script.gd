@@ -6,6 +6,7 @@ const JUMP_VELOCITY = -400.0
 
 var color_keep
 var is_scorable : bool = false
+var score : int = 0
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -16,6 +17,8 @@ func _ready():
 func _physics_process(delta):
 	pass
 
+func get_score() -> int: 
+	return score
 
 func _on_trigger_area_area_entered(area):
 	if area.get_parent().name == "Ball":
@@ -37,3 +40,4 @@ func _on_score_area_area_entered(area):
 	if area.get_parent().name == "Ball" and is_scorable:
 		is_scorable = false
 		print ("Scored")
+		score += 1

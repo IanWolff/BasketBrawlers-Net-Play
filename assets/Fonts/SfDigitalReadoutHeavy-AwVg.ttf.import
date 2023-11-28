@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://qgc4vi5osk7v"
-path="res://.godot/imported/Star Choco.ttf-f45186abd680c25caf36986893ce5702.fontdata"
+uid="uid://sawq0riypkdh"
+path="res://.godot/imported/SfDigitalReadoutHeavy-AwVg.ttf-0debc35110e700630d23d794f5d6c4b5.fontdata"
 
 [deps]
 
-source_file="res://assets/Fonts/Star Choco.ttf"
-dest_files=["res://.godot/imported/Star Choco.ttf-f45186abd680c25caf36986893ce5702.fontdata"]
+source_file="res://assets/Fonts/SfDigitalReadoutHeavy-AwVg.ttf"
+dest_files=["res://.godot/imported/SfDigitalReadoutHeavy-AwVg.ttf-0debc35110e700630d23d794f5d6c4b5.fontdata"]
 
 [params]
 
