@@ -1,10 +1,10 @@
 extends CharacterBody2D
 
 
-const SPEED = 300.0
-const JUMP_VELOCITY = -400.0
+const SPEED : float = 300.0
+const JUMP_VELOCITY : float = -400.0
 
-var color_keep
+var color_keep : Color
 var is_scorable : bool = false
 var score : int = 0
 
@@ -22,7 +22,6 @@ func get_score() -> int:
 
 func _on_trigger_area_area_entered(area):
 	if area.get_parent().name == "Ball":
-		print("Ball entered")
 		color_keep = $TriggerArea.modulate
 		$TriggerArea.modulate = Color.RED
 		is_scorable = true
@@ -39,5 +38,4 @@ func _on_trigger_area_area_exited(area):
 func _on_score_area_area_entered(area):
 	if area.get_parent().name == "Ball" and is_scorable:
 		is_scorable = false
-		print ("Scored")
 		score += 1

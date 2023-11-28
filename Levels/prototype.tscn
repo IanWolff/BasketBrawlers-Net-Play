@@ -50,7 +50,7 @@ sources/0 = SubResource("TileSetAtlasSource_gnxdt")
 
 [sub_resource type="LabelSettings" id="LabelSettings_ecv2c"]
 font = ExtResource("10_gnaau")
-font_size = 78
+font_size = 65
 font_color = Color(0.74902, 0.980392, 0.607843, 1)
 
 [node name="Prototype" type="Node2D"]
@@ -102,16 +102,16 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Sprite2D" type="Sprite2D" parent="ScoreBoard"]
-position = Vector2(1, -681)
-scale = Vector2(0.721053, 0.721053)
+position = Vector2(-9.53674e-07, -687)
+scale = Vector2(0.655263, 0.655263)
 texture = ExtResource("9_k6xg5")
 
 [node name="HomeScore" type="HBoxContainer" parent="ScoreBoard"]
 layout_mode = 0
-offset_left = -107.0
-offset_top = -655.0
+offset_left = -98.0
+offset_top = -663.0
 offset_right = -8.0
-offset_bottom = -594.0
+offset_bottom = -608.0
 alignment = 1
 
 [node name="Label" type="Label" parent="ScoreBoard/HomeScore"]
