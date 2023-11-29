@@ -23,6 +23,7 @@ scale = Vector2(0.655263, 0.655263)
 texture = ExtResource("1_ue78c")
 
 [node name="HomeScore" type="HBoxContainer" parent="."]
+layout_mode = 0
 offset_left = -98.0
 offset_top = -663.0
 offset_right = -8.0
@@ -36,6 +37,7 @@ label_settings = ExtResource("2_xgltd")
 horizontal_alignment = 1
 
 [node name="AwayScore" type="HBoxContainer" parent="."]
+layout_mode = 0
 offset_left = 8.0
 offset_top = -664.0
 offset_right = 98.0

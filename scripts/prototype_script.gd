@@ -15,7 +15,7 @@ func _process(delta):
 	if !has_scored:
 		if $LeftHoop.get_score() > away_score:
 			away_score = $LeftHoop.get_score()
-			$ScoreBoard/HomeScore/Label.text = str(away_score)
+			$ScoreBoard/AwayScore/Label.text = str(away_score)
 			has_scored = true
 			$ResetTimer.start()
 			$Ball.disable()
