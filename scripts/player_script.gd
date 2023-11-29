@@ -107,7 +107,7 @@ func initiate_grab():
 
 # Drops the currently held object
 func grab():
-	if len(grabbable_objects) > 0:
+	if len(grabbable_objects) > 0 and grabbable_objects[0].is_grabbable():
 		held_object = grabbable_objects.pop_front()
 		held_object.grab(self)
 		# Handle states

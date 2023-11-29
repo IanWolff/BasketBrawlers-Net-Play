@@ -30,4 +30,4 @@ func _process(delta):
 		$Ball.reset()
 		has_scored = false	
 	else:
-		$Ball.modulate.a -= 0.02
+		$Ball.modulate.a -= 0.03
