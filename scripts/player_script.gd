@@ -84,13 +84,27 @@ func handle_actions():
 		if is_holding_object:
 			initiate_throw()
 			throw(throw_strength, throw_velocity)
+	elif Input.is_action_just_pressed("Tap") and can_action:
+		if Input.is_action_pressed("Up"):
+			tap(Vector2.UP)
+		elif Input.is_action_pressed("Down"):
+			tap(Vector2.DOWN)
+		elif Input.is_action_pressed("Left"):
+			tap(Vector2.LEFT)
+		elif Input.is_action_pressed("Right"):
+			tap(Vector2.RIGHT)
+		else:
+			tap(Vector2.ZERO)
 	if Input.is_action_just_released("Jump") and !$ShortHopTimer.is_stopped() and can_move:
 		is_short_hopping = true
 	# Reset player jump states
 	if is_on_floor():
 		is_jumping = false
 		is_short_hopping = false
-	
+
+func tap(direction_vector : Vector2):
+	pass
+
 # Player jump
 func jump():
 	is_jumping = true
