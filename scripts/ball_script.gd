@@ -24,6 +24,12 @@ var rand : RandomNumberGenerator = RandomNumberGenerator.new()
 var is_grabbable : bool = false
 
 func _ready():
+	reset()
+
+func reset():
+	is_grabbable = true
+	position.x = 0
+	position.y = -28
 	velocity.y = rand.randf_range(-1500,-500)
 	velocity.x = rand.randf_range(-500,500)
 
@@ -41,10 +47,16 @@ func _physics_process(delta):
 				velocity.x += rand.randf_range(-5,5)
 		if has_gravity:
 			velocity.y += gravity * delta
-	if can_be_grabbed:
-		$GrabComponent.show()
-	else:
-		$GrabComponent.hide()
+	#if can_be_grabbed:
+	#	$GrabComponent.show()
+	#else:
+	#	$GrabComponent.hide()
+
+func disable():
+	is_grabbable = false
+
+func enable():
+	is_grabbable = true
 
 func grab(grabbing_player):
 	self.reparent(grabbing_player)

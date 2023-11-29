@@ -132,7 +132,7 @@ func initiate_throw():
 	elif Input.is_action_pressed("Down") and Input.is_action_pressed("Right") :
 		throw_velocity = 0.80 * (Vector2.DOWN + (0.5 * Vector2.RIGHT))
 	elif Input.is_action_pressed("Up"):
-		throw_velocity = 0.90 * (Vector2.UP + (0.2 * forward_vector))
+		throw_velocity = 0.95 * (Vector2.UP + (0.2 * forward_vector))
 	elif Input.is_action_pressed("Down"):
 		throw_velocity = Vector2.DOWN
 	elif Input.is_action_pressed("Left"):
@@ -140,7 +140,7 @@ func initiate_throw():
 	elif Input.is_action_pressed("Right"):
 		throw_velocity = Vector2.RIGHT + (0.25 * Vector2.UP)
 	else:
-		throw_velocity = 0.90 * (Vector2.UP + (0.2 * forward_vector))
+		throw_velocity = 0.95 * (Vector2.UP + (0.2 * forward_vector))
 
 # Drops the currently held object
 func throw(strength: float, ball_velocity : Vector2):

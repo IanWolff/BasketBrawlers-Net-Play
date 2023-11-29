@@ -11,6 +11,9 @@ func _process(delta):
 	time_elapsed += delta
 	$GameTime/Label.text = format_time(time_elapsed)
 
+func reset_time() : 
+	time_elapsed = 0
+
 func format_time(total_seconds : float) -> String:
 	var seconds : float = fmod(total_seconds , 60.0)
 	var minutes : int   =  int(total_seconds / 60.0) % 60
