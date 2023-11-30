@@ -1,6 +1,6 @@
 extends Node2D
 
-var player_side : Autoload.player_side = Autoload.player_side.HOME
+var player_side : Autoload.player_side = Autoload.player_side.AWAY
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

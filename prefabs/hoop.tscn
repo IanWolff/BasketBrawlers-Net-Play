@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://7memcylkg6sx"]
+[gd_scene load_steps=9 format=3 uid="uid://7memcylkg6sx"]
 
 [ext_resource type="Script" path="res://scripts/hoop_script.gd" id="1_ywv7y"]
 [ext_resource type="Texture2D" uid="uid://b3i60a6ble1g2" path="res://assets/Textures/Hoop.png" id="2_mh7lc"]
+[ext_resource type="Texture2D" uid="uid://ctb47iydwcqj6" path="res://assets/Textures/Net.png" id="3_mh4d6"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vb0lr"]
 radius = 5.0
@@ -26,6 +27,11 @@ script = ExtResource("1_ywv7y")
 [node name="Sprite2D2" type="Sprite2D" parent="."]
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_mh7lc")
+
+[node name="Net" type="Sprite2D" parent="."]
+position = Vector2(-27, 3)
+scale = Vector2(0.246429, 0.246429)
+texture = ExtResource("3_mh4d6")
 
 [node name="Back" type="CollisionShape2D" parent="."]
 position = Vector2(37, -38)

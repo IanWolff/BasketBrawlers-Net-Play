@@ -9,7 +9,7 @@ func _ready():
 	$ScoreBoard/HomeScore/Label.text = "0"
 	$ScoreBoard/AwayScore/Label.text = "0"
 	pass # Replace with function body.
-
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if !has_scored:
