@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b3i60a6ble1g2"
-path="res://.godot/imported/Hoop.png-2250462517301c60e256d57a929eba1c.ctex"
+path="res://.godot/imported/Hoop.png-7f662d82848a061736934c91e98ac30c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Textures/Hoop.png"
-dest_files=["res://.godot/imported/Hoop.png-2250462517301c60e256d57a929eba1c.ctex"]
+source_file="res://Assets/Textures/Hoop.png"
+dest_files=["res://.godot/imported/Hoop.png-7f662d82848a061736934c91e98ac30c.ctex"]
 
 [params]
 

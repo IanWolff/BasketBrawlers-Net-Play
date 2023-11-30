@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dehehnrjm3my4"
-path="res://.godot/imported/Scoreboard.png-c5b4c8f27b48ead913d520427a4fa768.ctex"
+uid="uid://cbss87b7xk5lc"
+path="res://.godot/imported/platformerPack_character.png-b980ac2e92b0d9489fe95f0cfb6b85bd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Textures/Scoreboard.png"
-dest_files=["res://.godot/imported/Scoreboard.png-c5b4c8f27b48ead913d520427a4fa768.ctex"]
+source_file="res://Assets/Spritesheet/platformerPack_character.png"
+dest_files=["res://.godot/imported/platformerPack_character.png-b980ac2e92b0d9489fe95f0cfb6b85bd.ctex"]
 
 [params]
 

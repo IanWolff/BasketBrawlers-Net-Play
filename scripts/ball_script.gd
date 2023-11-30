@@ -25,6 +25,7 @@ func _ready():
 	reset()
 
 func reset():
+	$Collision.hide()
 	set_last_owner(Autoload.player_side.NONE)
 	can_be_grabbed = true
 	position.x = 0
