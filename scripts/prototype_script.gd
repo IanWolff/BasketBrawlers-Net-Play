@@ -4,7 +4,7 @@ var home_score : int = 0
 var away_score : int = 0
 var has_scored : bool = false
 
-# Called when the node enters the scene tree for the first time.
+# Called when the node enters held_object.set_last_owner(Autoload.player_side.HOME)the scene tree for the first time.
 func _ready():
 	$ScoreBoard/HomeScore/Label.text = "0"
 	$ScoreBoard/AwayScore/Label.text = "0"

@@ -18,19 +18,20 @@ extends CharacterBody2D
 @export var can_grab: bool = true
 
 # Player graphics
-@onready var player_sprite : AnimatedSprite2D = $AnimatedSprite2D2
+@onready var player_sprite : AnimatedSprite2D = $AnimatedSprite2D
 @onready var particle_trails : CPUParticles2D = $ParticleTrails
 @onready var death_particles : CPUParticles2D = $DeathParticles
 
 var jump_count : int = 2
 var was_on_floor : bool = false
 var throw_velocity : Vector2 = Vector2.UP
-@export var forward_vector : Vector2 = Vector2.RIGHT
+@export var forward_vector : Vector2 = Vector2.LEFT
 
 var grabbable_objects : Array = []
 var held_object
 
 func _ready():
+	player_sprite.flip_h = true
 	$GrabComponent.hide()
 	pass
 
@@ -52,7 +53,7 @@ func movement():
 	was_on_floor = is_on_floor()
 	# Move Player
 	if can_move:	
-		var inputAxis = Input.get_axis("Left", "Right")
+		var inputAxis = Input.get_axis("AwayLeft", "AwayRight")
 		velocity = Vector2(inputAxis * move_speed, velocity.y)
 		move_and_slide()
 	if was_on_floor and !is_on_floor():
@@ -72,30 +73,30 @@ func handle_timers():
 		can_grab = true
 
 func handle_actions():
-	if Input.is_action_just_pressed("Jump") and can_move:
+	if Input.is_action_just_pressed("AwayJump") and can_move:
 		if (is_on_floor() or !$CoyoteTimer.is_stopped()):
 			jump()
-	elif Input.is_action_just_pressed("Grab") and can_action and can_grab:
+	elif Input.is_action_just_pressed("AwayGrab") and can_action and can_grab:
 		if !is_holding_object:
 			initiate_grab()
 		else:
 			drop_held_object()
-	elif Input.is_action_just_pressed("Throw") and can_action:
+	elif Input.is_action_just_pressed("AwayThrow") and can_action:
 		if is_holding_object:
 			initiate_throw()
 			throw(throw_strength, throw_velocity)
-	elif Input.is_action_just_pressed("Tap") and can_action:
-		if Input.is_action_pressed("Up"):
+	elif Input.is_action_just_pressed("AwayTap") and can_action:
+		if Input.is_action_pressed("AwayUp"):
 			tap(Vector2.UP)
-		elif Input.is_action_pressed("Down"):
+		elif Input.is_action_pressed("AwayDown"):
 			tap(Vector2.DOWN)
-		elif Input.is_action_pressed("Left"):
+		elif Input.is_action_pressed("AwayLeft"):
 			tap(Vector2.LEFT)
-		elif Input.is_action_pressed("Right"):
+		elif Input.is_action_pressed("AwayRight"):
 			tap(Vector2.RIGHT)
 		else:
 			tap(Vector2.ZERO)
-	if Input.is_action_just_released("Jump") and !$ShortHopTimer.is_stopped() and can_move:
+	if Input.is_action_just_released("AwayJump") and !$ShortHopTimer.is_stopped() and can_move:
 		is_short_hopping = true
 	# Reset player jump states
 	if is_on_floor():
@@ -137,34 +138,34 @@ func drop_held_object():
 	$GrabComponent/ThrowTimer.stop()
 
 func initiate_throw():
-	if Input.is_action_pressed("Up") and Input.is_action_pressed("Left") :
+	if Input.is_action_pressed("AwayUp") and Input.is_action_pressed("AwayLeft") :
 		if is_on_floor():
 			throw_velocity = 0.9 * (Vector2.UP +(0.5 * Vector2.LEFT))
 		else:
 			throw_velocity = 0.75 * (Vector2.UP +(0.6 * Vector2.LEFT))
-	elif Input.is_action_pressed("Up") and Input.is_action_pressed("Right") :
+	elif Input.is_action_pressed("AwayUp") and Input.is_action_pressed("AwayRight") :
 		if is_on_floor():
 			throw_velocity = 0.9 * (Vector2.UP + (0.5 * Vector2.RIGHT))
 		else:
 			throw_velocity = 0.75 * (Vector2.UP + (0.6 * Vector2.RIGHT))
-	elif Input.is_action_pressed("Down") and Input.is_action_pressed("Left") :
+	elif Input.is_action_pressed("AwayDown") and Input.is_action_pressed("AwayLeft") :
 		throw_velocity = 0.80 * (Vector2.DOWN + (0.6 * Vector2.LEFT))
-	elif Input.is_action_pressed("Down") and Input.is_action_pressed("Right") :
+	elif Input.is_action_pressed("AwayDown") and Input.is_action_pressed("AwayRight") :
 		throw_velocity = 0.80 * (Vector2.DOWN + (0.6 * Vector2.RIGHT))
-	elif Input.is_action_pressed("Up"):
+	elif Input.is_action_pressed("AwayUp"):
 		throw_velocity = 0.95 * (Vector2.UP + (0.2 * forward_vector))
-	elif Input.is_action_pressed("Down"):
+	elif Input.is_action_pressed("AwayDown"):
 		throw_velocity = Vector2.DOWN
-	elif Input.is_action_pressed("Left"):
+	elif Input.is_action_pressed("AwayLeft"):
 		throw_velocity = Vector2.LEFT + (0.25 * Vector2.UP)
-	elif Input.is_action_pressed("Right"):
+	elif Input.is_action_pressed("AwayRight"):
 		throw_velocity = Vector2.RIGHT + (0.25 * Vector2.UP)
 	else:
 		throw_velocity = 0.95 * (Vector2.UP + (0.2 * forward_vector))
 
 # Drops the currently held object
 func throw(strength: float, ball_velocity : Vector2):
-	held_object.set_last_owner(Autoload.player_side.HOME)
+	held_object.set_last_owner(Autoload.player_side.AWAY)
 	held_object.reparent(self.get_parent())
 	held_object.drop(strength * ball_velocity)
 	held_object = null
@@ -199,12 +200,12 @@ func player_animations():
 # Flip player sprite based on X velocity
 func flip_player():
 	if can_move:
-		if Input.get_axis("Left", "Right") < 0:
+		if Input.get_axis("AwayLeft", "AwayRight") < 0:
 			#if forward_vector == Vector2.LEFT:
 				#self.scale.x = 1
 				player_sprite.flip_h = true
 				forward_vector = Vector2.LEFT
-		elif Input.get_axis("Left", "Right") > 0:
+		elif Input.get_axis("AwayLeft", "AwayRight") > 0:
 			#if forward_vector == Vector2.RIGHT:
 				#self.scale.x = -1
 				player_sprite.flip_h = false

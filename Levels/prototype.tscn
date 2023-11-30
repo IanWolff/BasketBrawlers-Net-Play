@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://c33rba2x8q1ki"]
+[gd_scene load_steps=26 format=3 uid="uid://c33rba2x8q1ki"]
 
 [ext_resource type="PackedScene" uid="uid://bu3tur2xlhsd5" path="res://prefabs/ball.tscn" id="1_6l744"]
 [ext_resource type="Script" path="res://scripts/prototype_script.gd" id="1_g2ouy"]
@@ -6,9 +6,105 @@
 [ext_resource type="PackedScene" uid="uid://w7m6tehvvy3g" path="res://prefabs/human_player.tscn" id="2_rsxgl"]
 [ext_resource type="PackedScene" uid="uid://7memcylkg6sx" path="res://prefabs/hoop.tscn" id="3_qflja"]
 [ext_resource type="Texture2D" uid="uid://jaegp53ccc7w" path="res://assets/Spritesheet/platformPack_tilesheet.png" id="3_rdf4y"]
+[ext_resource type="Script" path="res://scripts/player_script.gd" id="5_evilh"]
+[ext_resource type="Texture2D" uid="uid://cbss87b7xk5lc" path="res://assets/Spritesheet/platformerPack_character.png" id="6_0in8p"]
 [ext_resource type="Script" path="res://scripts/right_hoop_script.gd" id="6_0xkil"]
+[ext_resource type="Texture2D" uid="uid://bf1lqavqywpdj" path="res://assets/Spritesheet/platformerPack_character - Copy.png" id="6_3v478"]
+[ext_resource type="Script" path="res://scripts/away_player_script.gd" id="6_8er2y"]
 [ext_resource type="PackedScene" uid="uid://fo4g0532757u" path="res://prefabs/score_board.tscn" id="6_q1x3o"]
 [ext_resource type="Script" path="res://scripts/left_hoop_script.gd" id="7_m75r5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vx5oq"]
+atlas = ExtResource("6_0in8p")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hucd2"]
+atlas = ExtResource("6_0in8p")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jhfjw"]
+atlas = ExtResource("6_0in8p")
+region = Rect2(192, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sl2nk"]
+atlas = ExtResource("6_0in8p")
+region = Rect2(288, 0, 96, 96)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lxk46"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vx5oq")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hucd2")
+}],
+"loop": true,
+"name": &"Jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jhfjw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sl2nk")
+}],
+"loop": true,
+"name": &"Walk",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_au5pg"]
+atlas = ExtResource("6_3v478")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k5c6r"]
+atlas = ExtResource("6_3v478")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3sb8a"]
+atlas = ExtResource("6_3v478")
+region = Rect2(192, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fqxl1"]
+atlas = ExtResource("6_3v478")
+region = Rect2(288, 0, 96, 96)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qcm61"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_au5pg")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k5c6r")
+}],
+"loop": true,
+"name": &"Jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3sb8a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fqxl1")
+}],
+"loop": true,
+"name": &"Walk",
+"speed": 5.0
+}]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gnxdt"]
 texture = ExtResource("3_rdf4y")
@@ -51,6 +147,19 @@ position = Vector2(0, -28)
 
 [node name="HomePlayer" parent="." instance=ExtResource("2_rsxgl")]
 position = Vector2(-223, -60)
+script = ExtResource("5_evilh")
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="HomePlayer" groups=["Player"]]
+sprite_frames = SubResource("SpriteFrames_lxk46")
+animation = &"Jump"
+
+[node name="AwayPlayer" parent="." instance=ExtResource("2_rsxgl")]
+position = Vector2(208, -63)
+script = ExtResource("6_8er2y")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="AwayPlayer"]
+sprite_frames = SubResource("SpriteFrames_qcm61")
+animation = &"Idle"
 
 [node name="RightHoop" parent="." instance=ExtResource("3_qflja")]
 position = Vector2(670, -270)
