@@ -18,16 +18,6 @@ func _physics_process(delta):
 
 func get_score() -> int: 
 	return score
-	
-func drop_net_tween():
-	var tween = create_tween()
-	tween.tween_property($Net, "scale", Vector2(0.7, 1.4), 0.1)
-	tween.tween_property($Net, "scale", Vector2.ONE, 0.1)
-	
-func lift_net_tween():
-	var tween = create_tween()
-	tween.tween_property($Net, "scale", Vector2(0.7, 1.4), 0.1)
-	tween.tween_property($Net, "scale", Vector2.ONE, 0.1)
 
 func _on_trigger_area_area_entered(area):
 	if area.get_parent().name == "Ball" and area.get_parent().get_last_owner() == $Node2D.player_side:
