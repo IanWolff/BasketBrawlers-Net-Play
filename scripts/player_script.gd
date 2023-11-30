@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 @export_category("Player Properties")
-@export var move_speed : float = 700.0
+@export var move_speed : float = 500.0
 @export var toss_strength : float = 700.0
 @export var throw_strength : float = 1200.0
 @export var jump_force : float = 1000.0
@@ -18,7 +18,7 @@ extends CharacterBody2D
 @export var can_grab: bool = true
 
 # Player graphics
-@onready var player_sprite : AnimatedSprite2D = $AnimatedSprite2D2
+@onready var player_sprite : AnimatedSprite2D = $AnimatedSprite2D
 @onready var particle_trails : CPUParticles2D = $ParticleTrails
 @onready var death_particles : CPUParticles2D = $DeathParticles
 
