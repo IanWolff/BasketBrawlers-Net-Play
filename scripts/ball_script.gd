@@ -18,12 +18,14 @@ extends CharacterBody2D
 @export_category("Ball Values") # You can tweak these changes according to your likings
 @export var speed: float = 0.0
 
+var last_owner : Autoload.player_side = Autoload.player_side.NONE
 var rand : RandomNumberGenerator = RandomNumberGenerator.new()
 
 func _ready():
 	reset()
 
 func reset():
+	set_last_owner(Autoload.player_side.NONE)
 	can_be_grabbed = true
 	position.x = 0
 	position.y = -28
@@ -36,6 +38,7 @@ func _physics_process(delta):
 		var collision_info : KinematicCollision2D = move_and_collide(velocity * delta)
 		if collision_info:
 			velocity = velocity.bounce(collision_info.get_normal())
+			velocity.x += rand.randf_range(-5,5)
 			if velocity.x > 0:
 				velocity.x -= friction * delta
 			elif velocity.x < 0:
@@ -66,6 +69,13 @@ func grab(grabbing_player):
 	position.y = -38
 	scale.x = 1
 	scale.y = 1
+
+func set_last_owner(new_owner : Autoload.player_side):
+	last_owner = new_owner
+	self.modulate = Autoload.get_player_color(new_owner)
+
+func get_last_owner():
+	return last_owner
 
 func drop(thrower_velocity : Vector2):
 	if is_held:

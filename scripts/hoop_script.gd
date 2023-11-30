@@ -20,7 +20,7 @@ func get_score() -> int:
 	return score
 
 func _on_trigger_area_area_entered(area):
-	if area.get_parent().name == "Ball":
+	if area.get_parent().name == "Ball" and area.get_parent().get_last_owner() == $Node2D.player_side:
 		color_keep = $TriggerArea.modulate
 		$TriggerArea.modulate = Color.RED
 		is_scorable = true
@@ -28,13 +28,13 @@ func _on_trigger_area_area_entered(area):
 
 
 func _on_trigger_area_area_exited(area):
-	if area.get_parent().name == "Ball":
+	if area.get_parent().name == "Ball" and area.get_parent().get_last_owner() == $Node2D.player_side:
 		$TriggerArea.modulate = color_keep
 		is_scorable = false
 		$ScoreArea.hide()
 
 
 func _on_score_area_area_entered(area):
-	if area.get_parent().name == "Ball" and is_scorable:
+	if area.get_parent().name == "Ball" and is_scorable and area.get_parent().get_last_owner() == $Node2D.player_side:
 		is_scorable = false
 		score += 1

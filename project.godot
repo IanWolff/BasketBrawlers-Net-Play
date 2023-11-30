@@ -19,6 +19,10 @@ boot_splash/show_image=false
 boot_splash/fullsize=false
 boot_splash/use_filter=false
 
+[autoload]
+
+Autoload="*res://scripts/autoload_script.gd"
+
 [display]
 
 window/stretch/mode="canvas_items"

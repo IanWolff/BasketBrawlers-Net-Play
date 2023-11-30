@@ -138,13 +138,19 @@ func drop_held_object():
 
 func initiate_throw():
 	if Input.is_action_pressed("Up") and Input.is_action_pressed("Left") :
-		throw_velocity = 0.75 * (Vector2.UP + Vector2.LEFT)
+		if is_on_floor():
+			throw_velocity = 0.9 * (Vector2.UP +(0.5 * Vector2.LEFT))
+		else:
+			throw_velocity = 0.75 * (Vector2.UP +(0.6 * Vector2.LEFT))
 	elif Input.is_action_pressed("Up") and Input.is_action_pressed("Right") :
-		throw_velocity = 0.75 * (Vector2.UP + Vector2.RIGHT)
+		if is_on_floor():
+			throw_velocity = 0.9 * (Vector2.UP + (0.5 * Vector2.RIGHT))
+		else:
+			throw_velocity = 0.75 * (Vector2.UP + (0.6 * Vector2.RIGHT))
 	elif Input.is_action_pressed("Down") and Input.is_action_pressed("Left") :
-		throw_velocity = 0.80 * (Vector2.DOWN + (0.5 * Vector2.LEFT))
+		throw_velocity = 0.80 * (Vector2.DOWN + (0.6 * Vector2.LEFT))
 	elif Input.is_action_pressed("Down") and Input.is_action_pressed("Right") :
-		throw_velocity = 0.80 * (Vector2.DOWN + (0.5 * Vector2.RIGHT))
+		throw_velocity = 0.80 * (Vector2.DOWN + (0.6 * Vector2.RIGHT))
 	elif Input.is_action_pressed("Up"):
 		throw_velocity = 0.95 * (Vector2.UP + (0.2 * forward_vector))
 	elif Input.is_action_pressed("Down"):
@@ -158,6 +164,7 @@ func initiate_throw():
 
 # Drops the currently held object
 func throw(strength: float, ball_velocity : Vector2):
+	held_object.set_last_owner(Autoload.player_side.HOME)
 	held_object.reparent(self.get_parent())
 	held_object.drop(strength * ball_velocity)
 	held_object = null
