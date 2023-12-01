@@ -1,14 +1,14 @@
 [gd_scene load_steps=7 format=3 uid="uid://w7m6tehvvy3g"]
 
-[ext_resource type="Texture2D" uid="uid://dxp77wq60c2rr" path="res://assets/Textures/CloudTexture.png" id="3_8vxmb"]
-[ext_resource type="PackedScene" uid="uid://dt40yv1l31o7n" path="res://components/grab_component.tscn" id="3_c8tov"]
+[ext_resource type="Texture2D" uid="uid://dxp77wq60c2rr" path="res://Assets/Textures/CloudTexture.png" id="3_8vxmb"]
+[ext_resource type="PackedScene" uid="uid://dt40yv1l31o7n" path="res://Components/grab_component.tscn" id="3_c8tov"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vheck"]
 size = Vector2(53, 68)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_71x7e"]
-radius = 54.0
-height = 126.0
+radius = 49.0
+height = 110.0
 
 [sub_resource type="Curve" id="Curve_m2jh0"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.246032, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -33,6 +33,7 @@ collision_mask = 8
 script = null
 
 [node name="GrabHitbox" type="CollisionShape2D" parent="GrabComponent" groups=["GrabComponent", "Player"]]
+position = Vector2(0, -8)
 shape = SubResource("CapsuleShape2D_71x7e")
 
 [node name="ThrowTimer" type="Timer" parent="GrabComponent"]
