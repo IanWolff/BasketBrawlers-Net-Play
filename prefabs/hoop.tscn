@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://7memcylkg6sx"]
 
 [ext_resource type="Script" path="res://scripts/hoop_script.gd" id="1_ywv7y"]
-[ext_resource type="Texture2D" uid="uid://b3i60a6ble1g2" path="res://assets/Textures/Hoop.png" id="2_mh7lc"]
+[ext_resource type="Texture2D" uid="uid://b3i60a6ble1g2" path="res://Assets/Textures/Hoop.png" id="2_mh7lc"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vb0lr"]
 radius = 5.0
@@ -20,7 +20,7 @@ size = Vector2(107, 4)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4lp02"]
 size = Vector2(72, 6)
 
-[node name="Hoop" type="CharacterBody2D"]
+[node name="Hoop" type="StaticBody2D"]
 script = ExtResource("1_ywv7y")
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]

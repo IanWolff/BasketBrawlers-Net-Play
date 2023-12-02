@@ -1,4 +1,4 @@
-extends CharacterBody2D
+extends StaticBody2D
 
 const SPEED : float = 300.0
 const JUMP_VELOCITY : float = -400.0
@@ -8,7 +8,7 @@ var is_scorable : bool = false
 var score : int = 0
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
-var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+var gravity = 0 # ProjectSettings.get_setting("physics/2d/default_gravity")
 
 func _ready():
 	$ScoreArea.hide()
