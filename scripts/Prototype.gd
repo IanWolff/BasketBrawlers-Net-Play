@@ -11,7 +11,7 @@ func _ready():
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	if !has_scored:
 		if $LeftHoop.get_score() > away_score:
 			away_score = $LeftHoop.get_score()

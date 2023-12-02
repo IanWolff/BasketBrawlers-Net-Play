@@ -20,7 +20,6 @@ extends CharacterBody2D
 # Player graphics
 @onready var player_sprite : AnimatedSprite2D = $AnimatedSprite2D2
 @onready var particle_trails : CPUParticles2D = $ParticleTrails
-@onready var death_particles : CPUParticles2D = $DeathParticles
 
 var jump_count : int = 2
 var was_on_floor : bool = false
@@ -102,7 +101,7 @@ func handle_actions():
 		is_jumping = false
 		is_short_hopping = false
 
-func tap(direction_vector : Vector2):
+func tap(_direction_vector : Vector2):
 	pass
 
 # Player jump
@@ -209,20 +208,6 @@ func flip_player():
 				#self.scale.x = -1
 				player_sprite.flip_h = false
 				forward_vector = Vector2.RIGHT
-
-# Tween Animations
-func death_tween():
-	var tween = create_tween()
-	tween.tween_property(self, "scale", Vector2.ZERO, 0.15)
-	await tween.finished
-	await get_tree().create_timer(0.3).timeout
-	#AudioManager.respawn_sfx.play()
-	respawn_tween()
-
-func respawn_tween():
-	var tween = create_tween()
-	tween.stop(); tween.play()
-	tween.tween_property(self, "scale", Vector2.ONE, 0.15) 
 
 func jump_tween():
 	var tween = create_tween()

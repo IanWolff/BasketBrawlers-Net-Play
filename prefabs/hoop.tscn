@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://7memcylkg6sx"]
 
-[ext_resource type="Script" path="res://scripts/hoop_script.gd" id="1_ywv7y"]
+[ext_resource type="Script" path="res://scripts/Hoop.gd" id="1_dsr6g"]
 [ext_resource type="Texture2D" uid="uid://b3i60a6ble1g2" path="res://Assets/Textures/Hoop.png" id="2_mh7lc"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vb0lr"]
@@ -21,43 +21,47 @@ size = Vector2(107, 4)
 size = Vector2(72, 6)
 
 [node name="Hoop" type="StaticBody2D"]
-script = ExtResource("1_ywv7y")
+script = ExtResource("1_dsr6g")
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_mh7lc")
 
-[node name="Back" type="CollisionShape2D" parent="."]
+[node name="Back_StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="Back_Collision" type="CollisionShape2D" parent="Back_StaticBody2D"]
 position = Vector2(37, -38)
 rotation = -1.5708
 shape = SubResource("CapsuleShape2D_vb0lr")
 
-[node name="Rim" type="CollisionShape2D" parent="."]
+[node name="Rim_StaticBody2D" type="StaticBody2D" parent="."]
 position = Vector2(-65, -38)
+
+[node name="Rim_Collision" type="CollisionShape2D" parent="Rim_StaticBody2D"]
 shape = SubResource("CircleShape2D_1b60f")
 
-[node name="Block" type="CollisionShape2D" parent="."]
+[node name="ShotBlock_Collision" type="CollisionShape2D" parent="."]
 position = Vector2(-19.0909, -38.1818)
 rotation = -3.14159
 shape = SubResource("SegmentShape2D_7bpio")
 one_way_collision = true
 
-[node name="ScoreArea" type="Area2D" parent="."]
+[node name="Score_Area" type="Area2D" parent="."]
 collision_layer = 16
 collision_mask = 8
 
-[node name="ScorableArea" type="CollisionShape2D" parent="ScoreArea"]
+[node name="Score_Collision" type="CollisionShape2D" parent="Score_Area"]
 position = Vector2(-25.5, -8)
 shape = SubResource("RectangleShape2D_uvxgw")
 
-[node name="TriggerArea" type="Area2D" parent="."]
+[node name="Trigger_Area" type="Area2D" parent="."]
 collision_layer = 16
 collision_mask = 8
 
-[node name="ScoreTrigger" type="CollisionShape2D" parent="TriggerArea"]
+[node name="Trigger_Collision" type="CollisionShape2D" parent="Trigger_Area"]
 position = Vector2(-27, -55)
 shape = SubResource("RectangleShape2D_4lp02")
 
-[connection signal="area_entered" from="ScoreArea" to="." method="_on_score_area_area_entered"]
-[connection signal="area_entered" from="TriggerArea" to="." method="_on_trigger_area_area_entered"]
-[connection signal="area_exited" from="TriggerArea" to="." method="_on_trigger_area_area_exited"]
+[connection signal="area_entered" from="Score_Area" to="." method="_on_score_area_area_entered"]
+[connection signal="area_entered" from="Trigger_Area" to="." method="_on_trigger_area_area_entered"]
+[connection signal="area_exited" from="Trigger_Area" to="." method="_on_trigger_area_area_exited"]

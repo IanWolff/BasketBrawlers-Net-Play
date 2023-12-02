@@ -1,40 +1,41 @@
 extends StaticBody2D
 
+# Properties
 const SPEED : float = 300.0
 const JUMP_VELOCITY : float = -400.0
 
-var color_keep : Color
+# States
 var is_scorable : bool = false
+
+# Values
 var score : int = 0
 
-# Get the gravity from the project settings to be synced with RigidBody nodes.
-var gravity = 0 # ProjectSettings.get_setting("physics/2d/default_gravity")
+# Utilities
+var color_keep : Color
+signal score_update
 
 func _ready():
-	$ScoreArea.hide()
-
-func _physics_process(delta):
-	pass
+	$Score_Area.hide()
 
 func get_score() -> int: 
 	return score
 
+# Signal Methods
 func _on_trigger_area_area_entered(area):
 	if area.get_parent().name == "Ball" and area.get_parent().get_last_owner() == $Node2D.player_side:
-		color_keep = $TriggerArea.modulate
-		$TriggerArea.modulate = Color.RED
+		color_keep = $Trigger_Area.modulate
+		$Trigger_Area.modulate = Color.RED
 		is_scorable = true
-		$ScoreArea.show()
-
+		$Score_Area.show()
 
 func _on_trigger_area_area_exited(area):
 	if area.get_parent().name == "Ball" and area.get_parent().get_last_owner() == $Node2D.player_side:
-		$TriggerArea.modulate = color_keep
+		$Trigger_Area.modulate = color_keep
 		is_scorable = false
-		$ScoreArea.hide()
-
+		$Score_Area.hide()
 
 func _on_score_area_area_entered(area):
 	if area.get_parent().name == "Ball" and is_scorable and area.get_parent().get_last_owner() == $Node2D.player_side:
-		is_scorable = false
 		score += 1
+		is_scorable = false
+		emit_signal("score_update")

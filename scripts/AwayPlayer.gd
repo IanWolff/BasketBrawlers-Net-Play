@@ -103,7 +103,7 @@ func handle_actions():
 		is_jumping = false
 		is_short_hopping = false
 
-func tap(direction_vector : Vector2):
+func tap(_direction_vector : Vector2):
 	pass
 
 # Player jump

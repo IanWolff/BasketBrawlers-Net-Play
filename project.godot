@@ -21,7 +21,7 @@ boot_splash/use_filter=false
 
 [autoload]
 
-Autoload="*res://scripts/autoload_script.gd"
+Autoload="*res://scripts/Autoload.gd"
 
 [display]
 

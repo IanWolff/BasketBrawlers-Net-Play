@@ -1,18 +1,19 @@
-[gd_scene load_steps=26 format=3 uid="uid://c33rba2x8q1ki"]
+[gd_scene load_steps=27 format=3 uid="uid://c33rba2x8q1ki"]
 
 [ext_resource type="PackedScene" uid="uid://bu3tur2xlhsd5" path="res://Prefabs/ball.tscn" id="1_6l744"]
-[ext_resource type="Script" path="res://scripts/prototype_script.gd" id="1_g2ouy"]
-[ext_resource type="Script" path="res://scripts/autoload_script.gd" id="2_ka6a6"]
-[ext_resource type="PackedScene" uid="uid://w7m6tehvvy3g" path="res://Prefabs/human_player.tscn" id="2_rsxgl"]
+[ext_resource type="Script" path="res://scripts/Prototype.gd" id="1_ak2vm"]
+[ext_resource type="PackedScene" uid="uid://w7m6tehvvy3g" path="res://Prefabs/player.tscn" id="2_rsxgl"]
+[ext_resource type="Script" path="res://scripts/Autoload.gd" id="2_trwbn"]
 [ext_resource type="PackedScene" uid="uid://7memcylkg6sx" path="res://Prefabs/hoop.tscn" id="3_qflja"]
 [ext_resource type="Texture2D" uid="uid://jaegp53ccc7w" path="res://Assets/Spritesheet/platformPack_tilesheet.png" id="3_rdf4y"]
-[ext_resource type="Script" path="res://scripts/player_script.gd" id="5_evilh"]
+[ext_resource type="Script" path="res://scripts/Player.gd" id="5_y5eky"]
 [ext_resource type="Texture2D" uid="uid://cbss87b7xk5lc" path="res://Assets/Spritesheet/platformerPack_character.png" id="6_0in8p"]
-[ext_resource type="Script" path="res://scripts/right_hoop_script.gd" id="6_0xkil"]
 [ext_resource type="Texture2D" uid="uid://bf1lqavqywpdj" path="res://Assets/Spritesheet/platformerPack_character - Copy.png" id="6_3v478"]
-[ext_resource type="Script" path="res://scripts/away_player_script.gd" id="6_8er2y"]
 [ext_resource type="PackedScene" uid="uid://fo4g0532757u" path="res://Prefabs/score_board.tscn" id="6_q1x3o"]
-[ext_resource type="Script" path="res://scripts/left_hoop_script.gd" id="7_m75r5"]
+[ext_resource type="Script" path="res://scripts/AwayPlayer.gd" id="7_qd0bt"]
+[ext_resource type="Script" path="res://scripts/RightHoop.gd" id="10_sfv0c"]
+[ext_resource type="Script" path="res://scripts/LeftHoop.gd" id="11_pr58a"]
+[ext_resource type="Script" path="res://scripts/StateMachine.gd" id="14_nhpys"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vx5oq"]
 atlas = ExtResource("6_0in8p")
@@ -133,10 +134,10 @@ terrain_set_0/terrain_0/color = Color(0.72549, 0, 0.137255, 1)
 sources/0 = SubResource("TileSetAtlasSource_gnxdt")
 
 [node name="Prototype" type="Node2D"]
-script = ExtResource("1_g2ouy")
+script = ExtResource("1_ak2vm")
 
 [node name="Global" type="Node2D" parent="."]
-script = ExtResource("2_ka6a6")
+script = ExtResource("2_trwbn")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(0, -324)
@@ -147,7 +148,7 @@ position = Vector2(0, -28)
 
 [node name="HomePlayer" parent="." instance=ExtResource("2_rsxgl")]
 position = Vector2(-223, -60)
-script = ExtResource("5_evilh")
+script = ExtResource("5_y5eky")
 
 [node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="HomePlayer" groups=["Player"]]
 sprite_frames = SubResource("SpriteFrames_lxk46")
@@ -155,7 +156,7 @@ animation = &"Jump"
 
 [node name="AwayPlayer" parent="." instance=ExtResource("2_rsxgl")]
 position = Vector2(208, -63)
-script = ExtResource("6_8er2y")
+script = ExtResource("7_qd0bt")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="AwayPlayer"]
 sprite_frames = SubResource("SpriteFrames_qcm61")
@@ -168,14 +169,14 @@ collision_layer = 11
 collision_mask = 11
 
 [node name="Node2D" type="Node2D" parent="RightHoop"]
-script = ExtResource("6_0xkil")
+script = ExtResource("10_sfv0c")
 
 [node name="LeftHoop" parent="." instance=ExtResource("3_qflja")]
 position = Vector2(-670, -270)
 scale = Vector2(-1, 1)
 
 [node name="Node2D" type="Node2D" parent="LeftHoop"]
-script = ExtResource("7_m75r5")
+script = ExtResource("11_pr58a")
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_1p7u0")
@@ -186,3 +187,6 @@ layer_0/tile_data = PackedInt32Array(65526, 393216, 1, 131062, 393216, 1, 196598
 
 [node name="ResetTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="StateMachine" type="Node2D" parent="."]
+script = ExtResource("14_nhpys")
