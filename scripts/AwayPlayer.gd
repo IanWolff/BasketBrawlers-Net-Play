@@ -9,7 +9,6 @@ extends CharacterBody2D
 @export var max_jump_count : int = 2
 
 @export_category("Player States")
-@export var is_grounded : bool = false
 @export var is_short_hopping : bool = false
 @export var is_jumping : bool = false
 @export var is_holding_object : bool = false
@@ -20,7 +19,6 @@ extends CharacterBody2D
 # Player graphics
 @onready var player_sprite : AnimatedSprite2D = $AnimatedSprite2D
 @onready var particle_trails : CPUParticles2D = $ParticleTrails
-@onready var death_particles : CPUParticles2D = $DeathParticles
 
 var jump_count : int = 2
 var was_on_floor : bool = false
@@ -210,20 +208,6 @@ func flip_player():
 				#self.scale.x = -1
 				player_sprite.flip_h = false
 				forward_vector = Vector2.RIGHT
-
-# Tween Animations
-func death_tween():
-	var tween = create_tween()
-	tween.tween_property(self, "scale", Vector2.ZERO, 0.15)
-	await tween.finished
-	await get_tree().create_timer(0.3).timeout
-	#AudioManager.respawn_sfx.play()
-	respawn_tween()
-
-func respawn_tween():
-	var tween = create_tween()
-	tween.stop(); tween.play()
-	tween.tween_property(self, "scale", Vector2.ONE, 0.15) 
 
 func jump_tween():
 	var tween = create_tween()

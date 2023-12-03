@@ -9,7 +9,6 @@ extends CharacterBody2D
 @export var max_jump_count : int = 2
 
 @export_category("Player States")
-@export var is_grounded : bool = false
 @export var is_short_hopping : bool = false
 @export var is_jumping : bool = false
 @export var is_holding_object : bool = false
@@ -21,9 +20,9 @@ extends CharacterBody2D
 @onready var player_sprite : AnimatedSprite2D = $AnimatedSprite2D2
 @onready var particle_trails : CPUParticles2D = $ParticleTrails
 
-var jump_count : int = 2
-var was_on_floor : bool = false
-var throw_velocity : Vector2 = Vector2.UP
+@export var jump_count : int = 2
+@export var was_on_floor : bool = false
+@export var throw_velocity : Vector2 = Vector2.UP
 @export var forward_vector : Vector2 = Vector2.RIGHT
 
 var grabbable_objects : Array = []
