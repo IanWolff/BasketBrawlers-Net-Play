@@ -1,7 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://w7m6tehvvy3g"]
+[gd_scene load_steps=9 format=3 uid="uid://w7m6tehvvy3g"]
 
 [ext_resource type="PackedScene" uid="uid://dt40yv1l31o7n" path="res://Components/grab_component.tscn" id="1_g4t2p"]
 [ext_resource type="Texture2D" uid="uid://dxp77wq60c2rr" path="res://Assets/Textures/CloudTexture.png" id="2_fhmfn"]
+[ext_resource type="PackedScene" uid="uid://d1bccsrnvgqfu" path="res://Scenes/throw_trajectory.tscn" id="3_qldaj"]
+[ext_resource type="PackedScene" uid="uid://dfw2wty4myjt6" path="res://Scenes/toss_trajectory.tscn" id="4_vuy85"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vheck"]
 size = Vector2(53, 68)
@@ -37,7 +39,7 @@ position = Vector2(0, -8)
 shape = SubResource("CapsuleShape2D_71x7e")
 
 [node name="ThrowTimer" type="Timer" parent="GrabComponent"]
-wait_time = 0.5
+wait_time = 10.0
 one_shot = true
 
 [node name="GrabTimer" type="Timer" parent="GrabComponent"]
@@ -93,6 +95,11 @@ one_shot = true
 [node name="CoyoteTimer" type="Timer" parent="."]
 wait_time = 0.12
 one_shot = true
+
+[node name="ThrowTrajectory" parent="." instance=ExtResource("3_qldaj")]
+
+[node name="TossTrajectory" parent="." instance=ExtResource("4_vuy85")]
+default_color = Color(1, 1, 1, 0.184314)
 
 [connection signal="area_entered" from="GrabComponent" to="." method="_on_grab_component_area_entered"]
 [connection signal="area_exited" from="GrabComponent" to="." method="_on_grab_component_area_exited"]

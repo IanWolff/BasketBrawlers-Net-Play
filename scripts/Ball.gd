@@ -1,9 +1,8 @@
 extends CharacterBody2D
 
 @export_category("Ball Properties") # You can tweak these changes according to your likings
-@export var gravity: float = 2000
+@export var gravity: float = 2000.0
 @export var friction: float = 30
-@export var bounce_power: float = 1.5
 @export var minimum_speed: float = 100.0
 @export var minimum_height_gain: float = 100
 @export var max_speed: float = 400.0
@@ -39,13 +38,13 @@ func _physics_process(delta):
 		var collision_info : KinematicCollision2D = move_and_collide(velocity * delta)
 		if collision_info:
 			velocity = velocity.bounce(collision_info.get_normal())
-			velocity.x += rand.randf_range(-5,5)
+			#velocity.x += rand.randf_range(-5,5)
 			if velocity.x > 0:
 				velocity.x -= friction * delta
 			elif velocity.x < 0:
 				velocity.x += friction * delta
-			else:
-				velocity.x += rand.randf_range(-5,5)
+			#else:
+				#velocity.x += rand.randf_range(-5,5)
 		if has_gravity:
 			velocity.y += gravity * delta
 	#if can_be_grabbed:

@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://7memcylkg6sx"]
 
-[ext_resource type="Script" path="res://scripts/Hoop.gd" id="1_dsr6g"]
+[ext_resource type="Script" path="res://Scripts/Hoop.gd" id="1_dsr6g"]
 [ext_resource type="Texture2D" uid="uid://b3i60a6ble1g2" path="res://Assets/Textures/Hoop.png" id="2_mh7lc"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vb0lr"]

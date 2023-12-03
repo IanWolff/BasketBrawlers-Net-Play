@@ -28,25 +28,30 @@ extends CharacterBody2D
 var grabbable_objects : Array = []
 var held_object
 
+var throw_trajectory
+var toss_trajectory
+
 func _ready():
 	$GrabComponent.hide()
+	throw_trajectory = $ThrowTrajectory
+	toss_trajectory = $TossTrajectory
 	pass
 
-func _process(_delta):
-	movement()
+func _process(delta):
+	movement(delta)
 	player_animations()
 	flip_player()
 
 # Player Movement Code
-func movement():
+func movement(delta):
 	# Apply gravity to Player
 	if !is_on_floor() && !is_holding_object:
 		velocity.y += gravity
 	elif is_on_floor():
 		jump_count = max_jump_count
 	# Handle jumping and set variables for coyote time
-	handle_timers()
-	handle_actions()
+	handle_timers(delta)
+	handle_actions(delta)
 	was_on_floor = is_on_floor()
 	# Move Player
 	if can_move:	
@@ -56,7 +61,7 @@ func movement():
 	if was_on_floor and !is_on_floor():
 		$CoyoteTimer.start()
 
-func handle_timers():
+func handle_timers(delta):
 	if !$GrabComponent/GrabTimer.is_stopped() and !is_holding_object:
 		grab()
 	elif $GrabComponent/ThrowTimer.is_stopped():
@@ -64,12 +69,14 @@ func handle_timers():
 			throw(toss_strength, throw_velocity)
 		else:
 			$GrabComponent.hide()
+	elif !$GrabComponent/ThrowTimer.is_stopped():
+		(initiate_throw(delta))
 	if $ShortHopTimer.is_stopped() and is_short_hopping:
 		stop_jump()
 	if $GrabComponent/ThrowLag.is_stopped() and !can_grab and is_on_floor():
 		can_grab = true
 
-func handle_actions():
+func handle_actions(delta):
 	if Input.is_action_just_pressed("Jump") and can_move:
 		if (is_on_floor() or !$CoyoteTimer.is_stopped()):
 			jump()
@@ -77,10 +84,10 @@ func handle_actions():
 		if !is_holding_object:
 			initiate_grab()
 		else:
-			drop_held_object()
+			drop_held_object(delta)
 	elif Input.is_action_just_pressed("Throw") and can_action:
 		if is_holding_object:
-			initiate_throw()
+			initiate_throw(delta)
 			throw(throw_strength, throw_velocity)
 	elif Input.is_action_just_pressed("Tap") and can_action:
 		if Input.is_action_pressed("Up"):
@@ -129,12 +136,12 @@ func grab():
 		$GrabComponent/ThrowTimer.start()
 
 # Drops the currently held object
-func drop_held_object():
-	initiate_throw()
+func drop_held_object(delta):
+	initiate_throw(delta)
 	throw(toss_strength, throw_velocity)
 	$GrabComponent/ThrowTimer.stop()
 
-func initiate_throw():
+func initiate_throw(delta):
 	if Input.is_action_pressed("Up") and Input.is_action_pressed("Left") :
 		if is_on_floor():
 			throw_velocity = 0.9 * (Vector2.UP +(0.5 * Vector2.LEFT))
@@ -159,6 +166,10 @@ func initiate_throw():
 		throw_velocity = Vector2.RIGHT + (0.25 * Vector2.UP)
 	else:
 		throw_velocity = 0.95 * (Vector2.UP + (0.2 * forward_vector))
+	toss_trajectory.reparent(self)
+	throw_trajectory.reparent(self)
+	toss_trajectory.update_trajectory(throw_velocity, toss_strength, 2000.0, delta)
+	throw_trajectory.update_trajectory(throw_velocity, throw_strength, 2000.0, delta)
 
 # Drops the currently held object
 func throw(strength: float, ball_velocity : Vector2):

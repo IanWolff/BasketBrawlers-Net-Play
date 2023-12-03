@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://dfw2wty4myjt6"]
+
+[ext_resource type="Texture2D" uid="uid://dugxv4ti5xnni" path="res://Assets/Textures/DashedLine.png" id="1_xgscy"]
+[ext_resource type="Script" path="res://Scripts/ThrowTrajectory.gd" id="2_vlhnc"]
+
+[sub_resource type="Gradient" id="Gradient_uqpxt"]
+offsets = PackedFloat32Array(0, 0.986755)
+colors = PackedColorArray(0.878431, 0.337255, 0, 1, 0.878431, 0.337255, 0, 0)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_f04p8"]
+radius = 23.0
+
+[node name="Trajectory" type="Line2D"]
+texture_repeat = 2
+default_color = Color(0.878431, 0.337255, 0, 0.0784314)
+gradient = SubResource("Gradient_uqpxt")
+texture = ExtResource("1_xgscy")
+texture_mode = 1
+script = ExtResource("2_vlhnc")
+
+[node name="CollisionTest" type="CharacterBody2D" parent="."]
+collision_layer = 16
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionTest" groups=["Ball"]]
+light_mask = 4
+visibility_layer = 4
+shape = SubResource("CircleShape2D_f04p8")
