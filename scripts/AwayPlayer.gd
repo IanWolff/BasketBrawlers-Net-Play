@@ -5,7 +5,7 @@ extends CharacterBody2D
 @export var toss_strength : float = 700.0
 @export var throw_strength : float = 1200.0
 @export var jump_force : float = 1000.0
-@export var gravity : float = 16.0
+@export var gravity : float = 35.0
 @export var max_jump_count : int = 2
 
 @export_category("Player States")

@@ -97,8 +97,10 @@ wait_time = 0.12
 one_shot = true
 
 [node name="ThrowTrajectory" parent="." instance=ExtResource("3_qldaj")]
+visible = false
 
 [node name="TossTrajectory" parent="." instance=ExtResource("4_vuy85")]
+visible = false
 default_color = Color(1, 1, 1, 0.184314)
 
 [connection signal="area_entered" from="GrabComponent" to="." method="_on_grab_component_area_entered"]
